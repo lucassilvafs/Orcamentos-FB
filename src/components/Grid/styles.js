@@ -1,22 +1,18 @@
 import styled from "styled-components";
 
 export const Table = styled.table`
-  width: 98%;
+  width: 100%;
   background-color: #fff;
   padding: 20px;
-  // box-shadow: 0px 0px 5px #ccc;
-  // border-radius: 5px;
+  box-shadow: 0px 0px 5px #ccc;
+  border-radius: 5px;
   max-width: 1120px;
-  // margin: 20px auto;
 
   @media (max-width: 750px) {
     width: 1000px;
     background-color: #fff;
     padding: 20px;
-    box-shadow: 0px 0px 5px #ccc;
-    border-radius: 5px;
     max-width: 1120px;
-    margin: 20px auto;
 }
 `;
 

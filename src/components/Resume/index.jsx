@@ -34,8 +34,8 @@ const Resume = ({ total, orderInfo }) => {
       <C.ResumeContainer>
         <C.HeaderTitle>Total</C.HeaderTitle>
         <C.Footer>
-          <FaDollarSign />
-          <C.Total>{total}</C.Total>
+          {/* <FaDollarSign /> */}
+          <C.Total>R$ {total}</C.Total>
         </C.Footer>
         <C.Button onClick={() => handleCheckout()}>Gerar Orçamento</C.Button>
       </C.ResumeContainer>

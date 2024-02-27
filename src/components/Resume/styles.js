@@ -10,7 +10,7 @@ export const Container = styled.div`
   justify-content: space-around;
 
   @media (max-width: 750px) {
-    width: 60%;
+    width: 70%;
   }
 `;
 
@@ -37,7 +37,8 @@ export const ResumeContainer = styled.div`
     }
 
     svg {
-      display: none;
+      width: 15px;
+      height: 15px;
     }
   }
 `;
