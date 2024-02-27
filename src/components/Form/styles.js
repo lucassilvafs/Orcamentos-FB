@@ -42,18 +42,47 @@ export const ItemsContainer = styled.div`
 `;
 
 export const CardContainer = styled.div`
-  width: 1050px;
+  width: 90%;
   display: flex;
-  gap: 10px;
+  gap: 20px;
   overflow-x: scroll;
   scroll-behavior: smooth;
-  ::-webkit-scrollbar { 
-    display: none;
+  margin-left: 20px;
+
+  @media (min-width: 750px) {
+    width: 1050px;
+    display: flex;
+    gap: 10px;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    ::-webkit-scrollbar { 
+      display: none;
+    }
+  }
+`;
+
+export const GridContainer = styled.div`
+  width: 98%;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0px 0px 5px #ccc;
+  border-radius: 5px;
+  max-width: 1120px;
+  margin: 20px auto;
+
+  @media (max-width: 750px) {
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
 `;
 
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-around;
+
+  @media (max-width: 750px) {
+    display: none;
+  }
 `;
 
 // export const CardContainer = styled.div`
@@ -164,6 +193,7 @@ export const ButtonScroll = styled.button`
   background-color: #F29215;
   &:hover {
     background-color: #FFB703;
+
 }
 `;
 

@@ -8,6 +8,22 @@ export const Container = styled.div`
   gap: 20px;
   // margin-top: -50px;
   justify-content: space-around;
+
+  @media (max-width: 750px) {
+    width: 50%;
+
+    p {
+      font-size: 12px;
+    }
+
+    span {
+      font-size: 20px;
+    }
+
+    svg {
+      display: none;
+    }
+  }
 `;
 
 export const ResumeContainer = styled.div`
@@ -22,10 +38,10 @@ export const ResumeContainer = styled.div`
   width: 30%;
 
   @media (max-width: 750px) {
-    width: 20%;
+    width: 100%;
 
     p {
-      font-size: 12px;
+      font-size: 16px;
     }
 
     span {
@@ -74,5 +90,9 @@ export const Button = styled.button`
   // background-color: #FFB703;
   // color: white;
   background-color: #F29215;
+
+  @media (max-width: 750px) {
+    font-size: 16px;
+  }
 `;
 

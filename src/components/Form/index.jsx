@@ -206,7 +206,9 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
           <C.ButtonScroll onClick={() => handleScroll(ITEM_WIDTH)}><FaAngleRight style={{ height:"20px", width:"20px" }}/></C.ButtonScroll>
         </C.ButtonContainer>
       </C.ItemsContainer>
-      <Grid itens={productsList} setItens={setProductsList} />
+      <C.GridContainer>
+        <Grid itens={productsList} setItens={setProductsList} />
+      </C.GridContainer>
       <Resume total={total} orderInfo={[clientName, production, payment]} />
     </>
   );

@@ -7,6 +7,11 @@
   justify-content: center;
   width: 190px;
   border-color: #F29215;
+
+  /* @media (max-width: 750px) {
+    height: 60px;
+    width: 150px;
+  } */
 }
 
 .product-info {
