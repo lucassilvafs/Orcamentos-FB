@@ -10,19 +10,7 @@ export const Container = styled.div`
   justify-content: space-around;
 
   @media (max-width: 750px) {
-    width: 50%;
-
-    p {
-      font-size: 12px;
-    }
-
-    span {
-      font-size: 20px;
-    }
-
-    svg {
-      display: none;
-    }
+    width: 60%;
   }
 `;
 
@@ -41,11 +29,11 @@ export const ResumeContainer = styled.div`
     width: 100%;
 
     p {
-      font-size: 16px;
+      font-size: 18px;
     }
 
     span {
-      font-size: 20px;
+      font-size: 22px;
     }
 
     svg {
