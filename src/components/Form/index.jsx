@@ -2,35 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import Grid from "../Grid";
 import Resume from "../Resume";
 import * as C from "./styles";
-import Card from "../Card";
+import CardItem from "../CardItem";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
 
 const ITEM_WIDTH = 200; // largura de cada item mais(+) o espaço entre eles;
-
-const SAMPLE_DATA = [
-  { title: "01", price: "20.50" },
-  { title: "02", price: "40.00" },
-  { title: "03", price: "30.80" },
-  { title: "04", price: "20.00" },
-  { title: "05", price: "50.40" },
-  { title: "06", price: "10.90" },
-  { title: "07", price: "25.80" },
-  { title: "08", price: "90.99" },
-  { title: "09", price: "5.50" },
-  { title: "10", price: "5.50" },
-  { title: "11", price: "5.50" },
-  { title: "12", price: "5.50" },
-  { title: "13", price: "5.50" },
-  { title: "14", price: "5.50" },
-  { title: "15", price: "5.50" },
-  { title: "16", price: "5.50" },
-  { title: "17", price: "5.50" },
-  { title: "18", price: "5.50" },
-  { title: "19", price: "5.50" },
-  { title: "20", price: "5.50" },
-];
 
 const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setOrderInfo }) => {
   const [clientName, setClientName] = useState("");
@@ -42,6 +19,8 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
   const [payment, setPayment] = useState("Pix");
   const [scrollPosition, setScrollPosition] = useState(0);
   const [dataProducts, setDataProducts] = useState([]);
+  const [dataProductsFilter, setDataProductsFilter] = useState([]);
+  const [inputText, setInputText] = useState('');
 
   const db = getFirestore(Firebase);
   const productsCollectionRef = collection(db, "products");
@@ -55,6 +34,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
     const getData = async () => {
       const data = await getDocs(productsCollectionRef);
       setDataProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setDataProductsFilter(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
 
@@ -80,6 +60,12 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
 
   const containerRef = useRef();
 
+  const handleChange = (target) => {
+    setInputText(target.value);
+    const products = dataProductsFilter.filter((product) => product.name.includes(inputText));
+    setDataProductsFilter(products);
+  }
+
   const handleAddInfo = (name) => {
     const product = dataProducts.find((product) => product.name === name);
     // console.log(product);
@@ -90,7 +76,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
   };
 
   const handleScroll = (scrollAmount) => {
-    const leng = SAMPLE_DATA.length;
+    const leng = dataProducts.length;
     const newScrollPosition = scrollPosition + scrollAmount;
     const max = (leng * ITEM_WIDTH) - (ITEM_WIDTH * 5);
     console.log("max: " + max);
@@ -189,17 +175,21 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
         <C.Button onClick={handleSave}>ADICIONAR</C.Button>
       </C.Container>
       <C.ItemsContainer>
+        <C.HeaderTitle>Produtos</C.HeaderTitle>
+        <C.Input
+          onChange={ ({ target }) => handleChange(target) }
+          placeholder="Procurar"
+        />
         <C.CardContainer ref={containerRef}>
-          { dataProducts.map((data) => {
+          { (inputText ? dataProductsFilter : dataProducts).map((data) => {
             return (
-              <Card 
+              <CardItem 
                 name={data.name} 
                 price={data.price}
                 quantMin={data.quant_min} 
                 handleAddInfo={handleAddInfo}/>
             )
           }) }
-          
         </C.CardContainer>
         <C.ButtonContainer>
           <C.ButtonScroll onClick={() => handleScroll(-ITEM_WIDTH)}><FaAngleLeft style={{ height:"20px", width:"20px" }} /></C.ButtonScroll>

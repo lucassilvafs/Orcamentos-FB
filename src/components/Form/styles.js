@@ -79,10 +79,15 @@ export const GridContainer = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-around;
+  margin-top: 10px;
 
   @media (max-width: 750px) {
     display: none;
   }
+`;
+
+export const InputText = styled.input`
+  border-radius: 5px;
 `;
 
 // export const CardContainer = styled.div`
@@ -133,6 +138,7 @@ export const Input = styled.input`
   padding: 5px 10px;
   font-size: 15px;
   border: 1px solid #ccc;
+  margin-bottom: 10px;
 `;
 
 export const InputDesc = styled.textarea`
@@ -140,7 +146,7 @@ export const InputDesc = styled.textarea`
   resize: none;
   border-radius: 5px;
   padding: 5px 10px;
-  height: 75px;
+  height: 50px;
   font-size: 15px;
   border: 1px solid #ccc;
 `;
@@ -169,12 +175,18 @@ export const RadioGroup = styled.div`
 export const Button = styled.button`
   align-self: center;
   height: 45px;
+  // font-size: 15px;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   color: white;
   background-color: #F29215;
+  transition: all 0.25s ease;
+  font:{
+    size:12px;
+    weight:bold;
+  }
   &:hover {
     background-color: #FFB703;
 }
@@ -190,6 +202,7 @@ export const ButtonScroll = styled.button`
   border-radius: 5px;
   cursor: pointer;
   color: white;
+  transition: all 0.25s ease;
   background-color: #F29215;
   &:hover {
     background-color: #FFB703;
@@ -210,6 +223,12 @@ export const Select = styled.select`
   padding: 5px 10px;
   font-size: 15px;
   border: 1px solid #ccc;
+`;
+
+export const HeaderTitle = styled.p`
+  margin: 0px;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 export const Option = styled.option`

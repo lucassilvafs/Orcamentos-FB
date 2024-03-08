@@ -68,20 +68,38 @@ export const Total = styled.span`
   font-weight: bold;
 `;
 
+
 export const Button = styled.button`
   margin-bottom: 20px;
   padding: 10px 40px;
-  border: none;
+  border: 1px solid;
   border-radius: 5px;
+  border-color: #F29215;
   cursor: pointer;
   font-size: 18px;
-  color: #fff;
-  // background-color: #FFB703;
-  // color: white;
-  background-color: #F29215;
+  color: #F29215;
+  background-color: #fff;
+  transition: all 0.25s ease;
+  &:hover {
+    background-color: #F29215;
+    color: #fff;
+}
 
   @media (max-width: 750px) {
     font-size: 16px;
   }
-`;
+`; 
 
+
+// .icon-expand{
+//   &::after{
+//     box-shadow: inset 0 0 0 1px $red;
+//   }
+//   &::before{
+//     background: $red;
+//     box-shadow: inset 0 0 0 $icon-size $background;
+//   }
+//   &:hover::before{
+//     box-shadow: inset 0 0 0 1px $background;
+//   }
+// }
