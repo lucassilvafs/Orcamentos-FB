@@ -132,17 +132,21 @@ h1.header-title {
 .btn-pdf {
     margin-top: 50px;
     margin-bottom: 50px;
+    margin-bottom: 20px;
     padding: 10px 40px;
-    border: none;
+    border: 1px solid;
     border-radius: 5px;
+    border-color: #F29215;
     cursor: pointer;
-    color: white;
     font-size: 18px;
-    background-color: #F29215;
+    color: #F29215;
+    background-color: #fff;
+    transition: all 0.25s ease;
 }
 
 button:hover {
-    background-color: #FFB703;
+    background-color: #F29215;
+    color: #fff;
 }
 
 .payment-info {

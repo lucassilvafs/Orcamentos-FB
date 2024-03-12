@@ -26,6 +26,4 @@ const CardItem = ({ name, price, quantMin, handleAddInfo }) => {
     );
   }
 
-  // custom-btn btn-14
-  // className='button-div'
 export default CardItem;

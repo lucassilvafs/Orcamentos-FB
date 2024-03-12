@@ -37,25 +37,6 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
       setDataProductsFilter(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
-
-  //   switch(payment) {
-  //     case 200:
-  //         console.log("Esse é um aluno impressionador de Excel da Hashtag!");
-  //     case "Power BI":
-  //         console.log("Esse é um aluno impressionador de Power BI da Hashtag!");
-  //     case "PowerPoint":
-  //         console.log("Esse é um aluno impressionador de PowerPoint da Hashtag!");
-  //     case "Python":
-  //         console.log("Esse é um aluno impressionador de Python da Hashtag!");
-  //     case "Html/CSS":
-  //         console.log("Esse é um aluno impressionador de Html/CSS da Hashtag!");
-  //     case "VBA":
-  //         console.log("Esse é um aluno impressionador de VBA da Hashtag!");
-  //     case "SQL":
-  //         console.log("Esse é um aluno impressionador de SQL da Hashtag!");
-  //     case "JavaScript":
-  //         console.log("Esse é um aluno impressionador de JavaScript da Hashtag!");
-  // }
   }, []);
 
   const containerRef = useRef();
@@ -79,7 +60,6 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
     const leng = dataProducts.length;
     const newScrollPosition = scrollPosition + scrollAmount;
     const max = (leng * ITEM_WIDTH) - (ITEM_WIDTH * 5);
-    console.log("max: " + max);
     if (newScrollPosition < 0 || newScrollPosition > max){
       return;
     }
@@ -94,7 +74,9 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
     if (!productName || !quant) {
       alert("Informe o produto e a quantidade!");
       return;
-    } else if (unitValue < 1 || quant < 1) {
+    }
+    
+    if (unitValue < 1 || quant < 1) {
       alert("Os valores tem que ser positivos!");
       return;
     }

@@ -22,15 +22,12 @@ const Home = () => {
     const total = amountTotal.reduce((acc, cur) => acc + cur, 0).toFixed(2);
 
     setTotal(total);
-    // setOrderInfo(orderInfo);
   }, [productsList]);
 
   const handleAdd = (product) => {
     const newArrayProducts = [...productsList, product];
 
     setProductsList(newArrayProducts);
-
-    // setOrderInfo(orderInfo);
 
     localStorage.setItem("products", JSON.stringify(newArrayProducts));
   };
