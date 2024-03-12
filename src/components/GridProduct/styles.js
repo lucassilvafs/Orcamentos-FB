@@ -22,10 +22,18 @@ export const Tbody = styled.tbody``;
 
 export const Tr = styled.tr``;
 
-export const Th = styled.th`
+export const ThText = styled.th`
   text-align: start;
   border-bottom: inset;
   padding-bottom: 5px;
-  text-align: ${(props) => (props.alignCenter ? "center" : "start")};
+  // text-align: ${(props) => (props.alignCenter ? "center" : "start")};
+  width: ${(props) => (props.width ? props.width + "%" : "auto")};
+`;
+
+export const ThNumber = styled.th`
+  text-align: center;
+  border-bottom: inset;
+  padding-bottom: 5px;
+  // text-align: ${(props) => (props.alignCenter ? "center" : "start")};
   width: ${(props) => (props.width ? props.width + "%" : "auto")};
 `;

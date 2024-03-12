@@ -195,11 +195,11 @@ export const Button = styled.button`
 export const ButtonScroll = styled.button`
   align-self: center;
   height: 40px;
-  width: 50px;
-  margin: 0px 100px;
+  width: 40px;
+  margin: 0px 70px;
   padding: 5px 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 100%;
   cursor: pointer;
   color: white;
   transition: all 0.25s ease;

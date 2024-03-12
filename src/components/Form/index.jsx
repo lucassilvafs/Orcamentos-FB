@@ -7,7 +7,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
 
-const ITEM_WIDTH = 200; // largura de cada item mais(+) o espaço entre eles;
+const ITEM_WIDTH = 230; // largura de cada item mais(+) o espaço entre eles;
 
 const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setOrderInfo }) => {
   const [clientName, setClientName] = useState("");

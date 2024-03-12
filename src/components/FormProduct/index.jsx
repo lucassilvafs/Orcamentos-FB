@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import GridProduct from "../GridProduct";
 import * as C from "./styles";
+import { FaSyncAlt } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection, doc, setDoc} from "firebase/firestore";
 
@@ -26,7 +27,7 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
       // setDataProductsFilter(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
-  }, [dataProducts]);
+  }, []);
 
   const containerRef = useRef();
 
@@ -90,6 +91,14 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
     setQuant(""); 
   };
 
+  const onEdit = (name) => {
+    const productForEdit = dataProducts.find((product) => product.name === name);
+    setProductName(productForEdit.name);
+    setDesc(productForEdit.desc);
+    setUnitValue(productForEdit.price);
+    setQuant(productForEdit.quant_min);
+  };
+
   return (
     <>
       <C.TopContainer>
@@ -125,7 +134,7 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
 
       <C.GridContainer>
         <C.HeaderTitle>Produtos cadastrados</C.HeaderTitle>
-        <GridProduct itens={dataProducts} setItens={setDataProducts} />
+        <GridProduct itens={dataProducts} setItens={setDataProducts} onEdit={onEdit} />
       </C.GridContainer>
     </>
   );

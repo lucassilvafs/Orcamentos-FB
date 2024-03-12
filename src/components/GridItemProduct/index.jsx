@@ -1,19 +1,18 @@
 import React from "react";
 import * as C from "./styles";
-import {
-  FaTrash,
-} from "react-icons/fa";
+import { FaTrash, FaRegEdit} from "react-icons/fa";
 
-const GridItem = ({ item, onDelete }) => {
+const GridItem = ({ item, onDelete, onEdit }) => {
   return (
     <C.Tr>
-      <C.Td>{item.name}</C.Td>
-      <C.Td>{item.desc}</C.Td>
-      <C.Td>R$ {Number(item.price).toFixed(2)}</C.Td>
-      <C.Td>{item.quant_min}</C.Td>
-      <C.Td alignCenter>
+      <C.TdText>{item.name}</C.TdText>
+      <C.TdText>{item.desc}</C.TdText>
+      <C.TdNumber>R$ {Number(item.price).toFixed(2)}</C.TdNumber>
+      <C.TdNumber>{item.quant_min}</C.TdNumber>
+      <C.TdNumber alignCenter>
+        <FaRegEdit style={{ marginRight:"30px" }} onClick={() => onEdit(item.name)} />
         <FaTrash onClick={() => onDelete(item.name)} />
-      </C.Td>
+      </C.TdNumber>
     </C.Tr>
   );
 };
