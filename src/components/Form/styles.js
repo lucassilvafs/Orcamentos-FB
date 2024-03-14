@@ -9,12 +9,12 @@ import styled from "styled-components";
 export const Container = styled.div`
   max-width: 1120px;
   margin: 20px auto;
-  width: 98%;
+  width: 95%;
   background-color: #fff;
   box-shadow: 0px 0px 5px #ccc;
   border-radius: 5px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   padding: 15px 0px;
   gap: 10px;
 
@@ -26,7 +26,7 @@ export const Container = styled.div`
 export const ItemsContainer = styled.div`
   max-width: 1120px;
   margin: 20px auto;
-  width: 98%;
+  width: 95%;
   background-color: #fff;
   box-shadow: 0px 0px 5px #ccc;
   border-radius: 5px;
@@ -62,7 +62,7 @@ export const CardContainer = styled.div`
 `;
 
 export const GridContainer = styled.div`
-  width: 98%;
+  width: 95%;
   background-color: #fff;
   box-shadow: 0px 0px 5px #ccc;
   border-radius: 5px;
@@ -70,7 +70,7 @@ export const GridContainer = styled.div`
   margin: 20px auto;
 
   @media (max-width: 750px) {
-    width: 98%;
+    width: 95%;
     overflow-x: scroll;
     scroll-behavior: smooth;
 }
@@ -112,7 +112,7 @@ export const InputText = styled.input`
 export const TopContainer = styled.div`
   max-width: 1120px;
   margin: 20px auto;
-  width: 98%;
+  width: 95%;
   background-color: #fff;
   box-shadow: 0px 0px 5px #ccc;
   border-radius: 5px;
@@ -154,7 +154,7 @@ export const InputDesc = styled.textarea`
 export const TopInput = styled.input`
   outline: none;
   border-radius: 5px;
-  width: 250px;
+  width: 230px;
   padding: 5px 10px;
   font-size: 15px;
   border: 1px solid #ccc;

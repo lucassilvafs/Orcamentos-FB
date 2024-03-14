@@ -116,9 +116,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
         </C.InputContent>
 
         <C.InputContent>
-          <C.Label>
-            Tipo de pagamento
-          </C.Label>
+          <C.Label>Tipo de pagamento</C.Label>
           <C.Select name="selectedPay" onChange={(e) => setPayment(e.target.value)}>
             <C.Option value="Pix">Pix</C.Option>
             <C.Option value="Transferência">Transferência</C.Option>
