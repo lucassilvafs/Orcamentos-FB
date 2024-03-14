@@ -59,7 +59,7 @@ export const ButtonDrawer = styled.button`
   font-size: 15px;
   &:hover {
     background-color: #FFB703;
-}
+  }
 `;
 
 export const Button = styled.button`
@@ -75,5 +75,9 @@ export const Button = styled.button`
   font:{
     size:12px;
     weight:bold;
+  }
+
+  @media (max-width: 750px) {
+    margin: 20px 0 0 20px;
   }
 `;

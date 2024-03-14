@@ -53,7 +53,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
     setProductName(product.name);
     setQuant(product.quant_min);
     setDesc(product.desc);
-    setUnitValue(product.price.toFixed(2));
+    setUnitValue(Number(product.price).toFixed(2));
   };
 
   const handleScroll = (scrollAmount) => {
