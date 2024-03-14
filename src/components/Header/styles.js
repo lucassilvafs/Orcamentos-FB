@@ -26,12 +26,22 @@ export const ContainerDiv = styled.div`
 export const Header = styled.h1`
   padding-top: 20px;
   color: #fff;
+
+  @media (max-width: 750px) {
+    font-size: 28px;
+  }
 `;
 
 export const Img = styled.img`
   height: 80px;
   width: 80px;
   margin-right: 20px;
+
+  @media (max-width: 750px) {
+    height: 60px;
+    width: 60px;
+    margin-top: 10px;
+  }
 `;
 
 export const ButtonDrawer = styled.button`

@@ -90,6 +90,26 @@ export const Button = styled.button`
   }
 `; 
 
+export const ButtonErase = styled.button`
+  margin-bottom: 20px;
+  padding: 10px 40px;
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: red;
+  cursor: pointer;
+  font-size: 18px;
+  color: red;
+  background-color: #fff;
+  transition: all 0.25s ease;
+  &:hover {
+    background-color: red;
+    color: #fff;
+}
+
+  @media (max-width: 750px) {
+    font-size: 16px;
+  }
+`; 
 
 // .icon-expand{
 //   &::after{

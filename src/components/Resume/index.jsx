@@ -21,11 +21,13 @@ const Resume = ({ total, orderInfo }) => {
       products: arrayProducts,
       total:total
     };
-
-    console.log(order);
-
     localStorage.setItem("order", JSON.stringify(order));
     return navigate("checkout");
+  }
+
+  const handleEraseAll = () => {
+    localStorage.removeItem('products');
+    localStorage.removeItem('order');
   }
 
   return (
@@ -38,6 +40,7 @@ const Resume = ({ total, orderInfo }) => {
           <C.Total>R$ {total}</C.Total>
         </C.Footer>
         <C.Button onClick={() => handleCheckout()}>Gerar Orçamento</C.Button>
+        <C.ButtonErase onClick={() => handleEraseAll()}>Apagar Tudo</C.ButtonErase>
       </C.ResumeContainer>
     </C.Container>
   );

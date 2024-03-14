@@ -11,9 +11,9 @@ const GridItem = ({ item, onDelete }) => {
     <C.Tr>
       <C.Td>{item.productName}</C.Td>
       <C.Td>{item.desc}</C.Td>
-      <C.Td>R$ {item.unitValue}</C.Td>
+      <C.Td>R$ {Number(item.unitValue).toFixed(2)}</C.Td>
       <C.Td>{item.quant}</C.Td>
-      <C.Td>R$ {item.total.toFixed(2)}</C.Td>
+      <C.Td>R$ {Number(item.total).toFixed(2)}</C.Td>
       {/* <C.Td alignCenter>
         {item.expense ? (
           <FaRegArrowAltCircleDown color="red" />

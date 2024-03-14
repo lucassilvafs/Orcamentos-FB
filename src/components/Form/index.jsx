@@ -166,6 +166,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
           { (inputText ? dataProductsFilter : dataProducts).map((data) => {
             return (
               <CardItem 
+                key={data.name}
                 name={data.name} 
                 price={data.price}
                 quantMin={data.quant_min} 
