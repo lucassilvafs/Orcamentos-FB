@@ -49,6 +49,7 @@ export const CardContainer = styled.div`
   overflow-x: scroll;
   scroll-behavior: smooth;
   margin-left: 20px;
+  margin-top: 10px;
 
   @media (min-width: 750px) {
     width: 1050px;
@@ -235,6 +236,24 @@ export const HeaderTitle = styled.p`
   font-size: 20px;
   font-weight: bold;
   align-text: center;
+
+  @media (max-width: 750px) {
+    margin-left: 110px;
+  }
+`;
+
+export const InputSearch = styled.input`
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  
+  @media (max-width: 750px) {
+    width: 230px;
+    margin-left: 75px;
+  }
 `;
 
 export const Option = styled.option`

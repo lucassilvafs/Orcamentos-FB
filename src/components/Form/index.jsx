@@ -157,7 +157,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
       
       <C.ItemsContainer>
         <C.HeaderTitle>Lista de produtos</C.HeaderTitle>
-        <C.Input
+        <C.InputSearch
           onChange={ ({ target }) => handleChange(target) }
           placeholder="Procurar"
         />
