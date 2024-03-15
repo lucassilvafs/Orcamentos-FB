@@ -40,7 +40,7 @@ const Header = () => {
       >
         <C.ContainerDrawer>
           <C.ButtonDrawer onClick={() => navigate("/")}>Orçamento</C.ButtonDrawer>
-          <C.ButtonDrawer onClick={() => location.pathname !== "/products" && navigate("products")}>Produtos</C.ButtonDrawer>
+          <C.ButtonDrawer onClick={() => navigate("/products")}>Produtos</C.ButtonDrawer>
         </C.ContainerDrawer>
       </Drawer>
       <C.ContainerDiv>

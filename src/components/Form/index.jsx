@@ -6,6 +6,7 @@ import CardItem from "../CardItem";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ITEM_WIDTH = 230; // largura de cada item mais(+) o espaço entre eles;
 
@@ -21,6 +22,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
   const [dataProducts, setDataProducts] = useState([]);
   const [dataProductsFilter, setDataProductsFilter] = useState([]);
   const [inputText, setInputText] = useState('');
+  const [reload, setReload] = useState(false);
 
   const db = getFirestore(Firebase);
   const productsCollectionRef = collection(db, "products");
@@ -37,9 +39,10 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
       setDataProductsFilter(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
-  }, []);
+  }, [reload]);
 
   const containerRef = useRef();
+  const navigate = useNavigate();
 
   const handleChange = (target) => {
     setInputText(target.value);
@@ -97,6 +100,8 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
     setUnitValue("");
     setQuant(""); 
   };
+
+  const reloadPage = () => window.location.reload();
 
   return (
     <>
@@ -182,7 +187,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
       <C.GridContainer>
         <Grid itens={productsList} setItens={setProductsList} />
       </C.GridContainer>
-      <Resume total={total} orderInfo={[clientName, production, payment]} />
+      <Resume total={total} orderInfo={[clientName, production, payment]} reloadPage={reloadPage} />
     </>
   );
 };

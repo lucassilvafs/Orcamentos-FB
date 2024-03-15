@@ -1,12 +1,19 @@
 import React from "react";
 import GridItemProduct from "../GridItemProduct";
 import * as C from "./styles";
+import Firebase from "../../services/firebaseConnection";
+import { doc, deleteDoc, getFirestore } from "firebase/firestore";
 
 const Grid = ({ itens, setItens, onEdit }) => {
-  const onDelete = (name) => {
-    const newArray = itens.filter((product) => product.name !== name);
-    setItens(newArray);
-    localStorage.setItem("products", JSON.stringify(newArray));
+  const db = getFirestore(Firebase);
+
+  const onDelete = async(name) => {
+    const products = itens.filter((product) => product.name !== name);
+    setItens(products);
+    // localStorage.setItem("products", JSON.stringify(newArray));
+
+    const productToDelete = itens.find((product) => product.name === name);
+    await deleteDoc(doc(db, "products", productToDelete.name));
   };
 
   return (

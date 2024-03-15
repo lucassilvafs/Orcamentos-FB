@@ -3,7 +3,9 @@ import GridProduct from "../GridProduct";
 import * as C from "./styles";
 import { FaSyncAlt } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
-import { getDocs , getFirestore, collection, doc, setDoc} from "firebase/firestore";
+import { getDocs , getFirestore, collection, doc, setDoc, updateDoc} from "firebase/firestore";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Modal } from 'antd';
 
 const ITEM_WIDTH = 200; // largura de cada item mais(+) o espaço entre eles;
 
@@ -12,10 +14,21 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
   const [quant, setQuant] = useState("");
   const [desc, setDesc] = useState("");
   const [unitValue, setUnitValue] = useState("");
+
+  const [modalProductName, setmodalProductName] = useState("");
+  const [modalQuant, setmodalQuant] = useState("");
+  const [modalDesc, setmodalDesc] = useState("");
+  const [modalUnitValue, setmodalUnitValue] = useState("");
+
   const [scrollPosition, setScrollPosition] = useState(0);
   const [dataProducts, setDataProducts] = useState([]);
   const [dataProductsFilter, setDataProductsFilter] = useState([]);
   const [inputText, setInputText] = useState('');
+  const [load, setLoad] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [nameToSearch, setNameToSearch] = useState('');
+  const [modalTextOK, setModalTextOK] = useState('Confirmar');
 
   const db = getFirestore(Firebase);
   const productsCollectionRef = collection(db, "products");
@@ -27,9 +40,10 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
       // setDataProductsFilter(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
-  }, []);
+  }, [load]);
 
   const containerRef = useRef();
+  const navigate = useNavigate();
 
   // const handleChange = (target) => {
   //   setInputText(target.value);
@@ -63,18 +77,12 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
     if (!productName || !quant) {
       alert("Informe o produto e a quantidade!");
       return;
-    } else if (unitValue < 1 || quant < 1) {
+    }
+    
+    if (unitValue < 1 || quant < 1) {
       alert("Os valores tem que ser positivos!");
       return;
     }
-
-    // const products = {
-    //   id: generateID(),
-    //   productName,
-    //   desc,
-    //   unitValue,
-    //   quant,
-    // };
 
     await setDoc(doc(db, "products", productName), {
       name: productName,
@@ -88,15 +96,57 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
     setProductName("");
     setDesc("");
     setUnitValue("");
-    setQuant(""); 
+    setQuant("");
+    setLoad(!load);
   };
 
   const onEdit = (name) => {
-    const productForEdit = dataProducts.find((product) => product.name === name);
-    setProductName(productForEdit.name);
-    setDesc(productForEdit.desc);
-    setUnitValue(productForEdit.price);
-    setQuant(productForEdit.quant_min);
+    setNameToSearch(name);
+
+    const productForEdit = dataProducts.find((product) => product.name === nameToSearch);
+    setmodalProductName(productForEdit.name);
+    setmodalDesc(productForEdit.desc);
+    setmodalUnitValue(productForEdit.price);
+    setmodalQuant(productForEdit.quant_min);
+
+    setModalOpen(true);
+  };
+
+  const handleOk = async() => {
+    if (!modalProductName || !modalDesc) {
+      alert("Informe o produto e a descrição!");
+      return;
+    }
+    
+    if (modalUnitValue < 1 || modalQuant < 1) {
+      alert("Os valores tem que ser positivos!");
+      return;
+    }
+
+    setModalTextOK('Salvando...');
+
+    await updateDoc(doc(db, "products", nameToSearch), {
+      name: modalProductName,
+      desc: modalDesc,
+      price: modalUnitValue,
+      quant_min : modalQuant,
+    });
+
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setModalOpen(false);
+      setConfirmLoading(false);
+      setmodalProductName('');
+      setmodalDesc('');
+      setmodalUnitValue('');
+      setmodalQuant('');
+      setLoad(!load);
+      setModalTextOK('Confirmar');
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -136,6 +186,46 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
         <C.HeaderTitle>Produtos cadastrados</C.HeaderTitle>
         <GridProduct itens={dataProducts} setItens={setDataProducts} onEdit={onEdit} />
       </C.GridContainer>
+
+      <Modal
+        title="Insira os novos valores"
+        open={modalOpen}
+        onOk={handleOk}
+        okText={modalTextOK}
+        onCancel={handleCancel}
+        cancelText="Cancelar"
+        confirmLoading={confirmLoading}
+      >
+        <C.TopContainerModal>
+          <C.InputContentModal>
+            <C.LabelModal>Nome do produto</C.LabelModal>
+            <C.InputModal value={modalProductName} onChange={(e) => setmodalProductName(e.target.value)} />
+          </C.InputContentModal>
+
+          <C.InputContentModal>
+            <C.LabelModal>Descrição</C.LabelModal>
+            <C.InputDesc value={modalDesc} onChange={(e) => setmodalDesc(e.target.value)} />
+          </C.InputContentModal>
+
+          <C.InputContentModal>
+            <C.LabelModal>Valor unitário</C.LabelModal>
+            <C.InputModal
+              value={modalUnitValue}
+              type="number"
+              onChange={(e) => setmodalUnitValue(e.target.value)}
+            />
+          </C.InputContentModal>
+
+          <C.InputContentModal>
+            <C.LabelModal>Quantidade mínima</C.LabelModal>
+            <C.InputModal
+              value={modalQuant}
+              type="number"
+              onChange={(e) => setmodalQuant(e.target.value)}
+            />
+          </C.InputContentModal>
+        </C.TopContainerModal>
+      </Modal>
     </>
   );
 };

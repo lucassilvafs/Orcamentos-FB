@@ -10,8 +10,8 @@ const GridItem = ({ item, onDelete, onEdit }) => {
       <C.TdNumber>R$ {Number(item.price).toFixed(2)}</C.TdNumber>
       <C.TdNumber>{item.quant_min}</C.TdNumber>
       <C.TdNumber alignCenter>
-        <FaRegEdit style={{ marginRight:"30px" }} onClick={() => onEdit(item.name)} />
-        <FaTrash onClick={() => onDelete(item.name)} />
+        <FaRegEdit style={{ marginRight:"40px", cursor: "pointer" }} onClick={() => onEdit(item.name)} />
+        <FaTrash style={{ cursor: "pointer" }} onClick={() => onDelete(item.name)} />
       </C.TdNumber>
     </C.Tr>
   );

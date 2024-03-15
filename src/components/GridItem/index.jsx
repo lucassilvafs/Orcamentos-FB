@@ -9,11 +9,11 @@ import {
 const GridItem = ({ item, onDelete }) => {
   return (
     <C.Tr>
-      <C.Td>{item.productName}</C.Td>
-      <C.Td>{item.desc}</C.Td>
-      <C.Td>R$ {Number(item.unitValue).toFixed(2)}</C.Td>
-      <C.Td>{item.quant}</C.Td>
-      <C.Td>R$ {Number(item.total).toFixed(2)}</C.Td>
+      <C.TdText>{item.productName}</C.TdText>
+      <C.TdText>{item.desc}</C.TdText>
+      <C.TdNumber>R$ {Number(item.unitValue).toFixed(2)}</C.TdNumber>
+      <C.TdNumber>{item.quant}</C.TdNumber>
+      <C.TdNumber>R$ {Number(item.total).toFixed(2)}</C.TdNumber>
       {/* <C.Td alignCenter>
         {item.expense ? (
           <FaRegArrowAltCircleDown color="red" />
@@ -21,9 +21,9 @@ const GridItem = ({ item, onDelete }) => {
           <FaRegArrowAltCircleUp color="green" />
         )}
       </C.Td> */}
-      <C.Td alignCenter>
-        <FaTrash onClick={() => onDelete(item.id)} />
-      </C.Td>
+      <C.TdNumber alignCenter>
+        <FaTrash style={{ cursor: "pointer" }} onClick={() => onDelete(item.id)} />
+      </C.TdNumber>
     </C.Tr>
   );
 };

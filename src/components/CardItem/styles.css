@@ -90,79 +90,6 @@
   outline: none;
 }
 
-/* 13 */
-.btn-13 {
-  background-color: #F29215;
-background-image: linear-gradient(315deg, #F29215 0%, #FFB703 74%);
-  border: none;
-  z-index: 1;
-}
-.btn-13:after {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  border-radius: 5px;
-  background-color: #4dccc6;
-  background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
-  box-shadow:
-  -7px -7px 20px 0px #fff9,
-  -4px -4px 5px 0px #fff9,
-  7px 7px 20px 0px #0002,
-  4px 4px 5px 0px #0001;
-  transition: all 0.3s ease;
-}
-.btn-13:hover {
-  color: #fff;
-}
-.btn-13:hover:after {
-  top: 0;
-  height: 100%;
-}
-.btn-13:active {
-  top: 2px;
-}
-
-/* 13
-.btn-13 {
-  background-color: #89d8d3;
-background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
-  border: none;
-  z-index: 1;
-}
-.btn-13:after {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  border-radius: 5px;
-  background-color: #4dccc6;
-  background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
-  box-shadow:
-   -7px -7px 20px 0px #fff9,
-   -4px -4px 5px 0px #fff9,
-   7px 7px 20px 0px #0002,
-   4px 4px 5px 0px #0001;
-  transition: all 0.3s ease;
-}
-.btn-13:hover {
-  color: #fff;
-}
-.btn-13:hover:after {
-  top: 0;
-  height: 100%;
-}
-.btn-13:active {
-  top: 2px;
-} */
-
-
 .btn-14 {
   background: rgb(255,151,0);
   border: none;
@@ -195,28 +122,3 @@ background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
 .btn-14:active {
   top: 2px;
 }
-
-/* .product-button {
-  background-color: rgb(76, 158, 169);
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  height: 38.63px;
-  line-height: 16px;
-  overflow: hidden;
-  text-align: center;
-  text-decoration: none;
-  transition-duration: 0.4s;
-  width: 244.65px;
-}
-
-.product-button:hover {
-  background-color: rgb(35, 112, 128);
-}
-
-.product-button:active {
-  background-color: rgb(118, 133, 202);
-} */

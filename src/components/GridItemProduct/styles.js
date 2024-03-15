@@ -4,7 +4,7 @@ export const Tr = styled.tr``;
 
 export const TdText = styled.td`
   margin: 30px;
-  padding-top: 15px;
+  padding-top: 20px;
   padding-right: 25px;
   text-align: start;
   word-break: break-all;
@@ -17,8 +17,8 @@ export const TdText = styled.td`
 
 export const TdNumber = styled.td`
   margin: 30px;
-  padding-top: 15px;
-  padding-right: 25px;
+  padding-top: 20px;
+  // padding-right: 25px;
   text-align: center;
   word-break: break-all;
 

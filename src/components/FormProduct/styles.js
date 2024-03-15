@@ -235,3 +235,36 @@ export const HeaderTitle = styled.p`
 export const Option = styled.option`
   
 `;
+
+export const TopContainerModal = styled.div`
+  max-width: 1120px;
+  margin: 20px auto;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 15px 0px;
+  gap: 10px;
+
+  @media (max-width: 750px) {
+    display: grid;
+  }
+`;
+
+export const InputContentModal = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LabelModal = styled.label`
+  
+`;
+
+export const InputModal = styled.input`
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+`;
