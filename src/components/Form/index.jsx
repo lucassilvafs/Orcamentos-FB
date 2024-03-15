@@ -154,8 +154,9 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
         </C.InputContent>
         <C.Button onClick={handleSave}>ADICIONAR</C.Button>
       </C.Container>
+      
       <C.ItemsContainer>
-        <C.HeaderTitle>Produtos</C.HeaderTitle>
+        <C.HeaderTitle>Lista de produtos</C.HeaderTitle>
         <C.Input
           onChange={ ({ target }) => handleChange(target) }
           placeholder="Procurar"
@@ -177,6 +178,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
           <C.ButtonScroll onClick={() => handleScroll(ITEM_WIDTH)}><FaAngleRight style={{ height:"20px", width:"20px" }}/></C.ButtonScroll>
         </C.ButtonContainer>
       </C.ItemsContainer>
+
       <C.GridContainer>
         <Grid itens={productsList} setItens={setProductsList} />
       </C.GridContainer>
