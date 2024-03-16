@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import GridProduct from "../GridProduct";
 import * as C from "./styles";
-import { FaSyncAlt } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
-import { getDocs , getFirestore, collection, doc, setDoc, updateDoc} from "firebase/firestore";
-import { useNavigate, useLocation } from "react-router-dom";
+import { getDocs , getFirestore, collection, doc, setDoc, updateDoc, deleteDoc} from "firebase/firestore";
 import { Modal } from 'antd';
 
-const ITEM_WIDTH = 200; // largura de cada item mais(+) o espaço entre eles;
-
-const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInfo, setOrderInfo }) => {
+const FormProduct = () => {
   const [productName, setProductName] = useState("");
   const [quant, setQuant] = useState("");
   const [desc, setDesc] = useState("");
@@ -20,10 +16,7 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
   const [modalDesc, setmodalDesc] = useState("");
   const [modalUnitValue, setmodalUnitValue] = useState("");
 
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [dataProducts, setDataProducts] = useState([]);
-  const [dataProductsFilter, setDataProductsFilter] = useState([]);
-  const [inputText, setInputText] = useState('');
   const [load, setLoad] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -31,47 +24,16 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
   const [modalTextOK, setModalTextOK] = useState('Confirmar');
 
   const db = getFirestore(Firebase);
-  const productsCollectionRef = collection(db, "products");
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getDocs(productsCollectionRef);
+      const data = await getDocs(collection(db, "products"));
       setDataProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      // setDataProductsFilter(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     getData();
   }, [load]);
 
-  const containerRef = useRef();
-  const navigate = useNavigate();
-
-  // const handleChange = (target) => {
-  //   setInputText(target.value);
-  //   const products = dataProductsFilter.filter((product) => product.name.includes(inputText));
-  //   setDataProductsFilter(products);
-  // }
-
-  // const handleAddInfo = (name) => {
-  //   const product = dataProducts.find((product) => product.name === name);
-  //   setProductName(product.name);
-  //   setQuant(product.quant_min);
-  //   setDesc(product.desc);
-  //   setUnitValue(product.price.toFixed(2));
-  // };
-
-  // const handleScroll = (scrollAmount) => {
-  //   const leng = dataProducts.length;
-  //   const newScrollPosition = scrollPosition + scrollAmount;
-  //   const max = (leng * ITEM_WIDTH) - (ITEM_WIDTH * 5);
-  //   if (newScrollPosition < 0 || newScrollPosition > max){
-  //     return;
-  //   }
-
-  //   setScrollPosition(newScrollPosition);
-  //   containerRef.current.scrollLeft = newScrollPosition;
-  // };
-
-  const generateID = () => Math.round(Math.random() * 100);
+  // const generateID = () => Math.round(Math.random() * 100);
 
   const handleSave = async () => {
     if (!productName || !quant) {
@@ -101,9 +63,10 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
   };
 
   const onEdit = (name) => {
+    console.log('nome aqui: ' + name);
     setNameToSearch(name);
-
-    const productForEdit = dataProducts.find((product) => product.name === nameToSearch);
+    
+    const productForEdit = dataProducts.find((product) => product.name === name);
     setmodalProductName(productForEdit.name);
     setmodalDesc(productForEdit.desc);
     setmodalUnitValue(productForEdit.price);
@@ -125,12 +88,22 @@ const FormProduct = ({ handleAdd, productsList, setProductsList, total, orderInf
 
     setModalTextOK('Salvando...');
 
-    await updateDoc(doc(db, "products", nameToSearch), {
-      name: modalProductName,
-      desc: modalDesc,
-      price: modalUnitValue,
-      quant_min : modalQuant,
-    });
+    if (modalProductName === nameToSearch) {
+      await updateDoc(doc(db, "products", nameToSearch), {
+        desc: modalDesc,
+        price: modalUnitValue,
+        quant_min : modalQuant,
+      });
+    } else {
+      await deleteDoc(doc(db, "products", nameToSearch));
+
+      await setDoc(doc(db, "products", modalProductName), {
+        name: modalProductName,
+        desc: modalDesc,
+        price: modalUnitValue,
+        quant_min : modalQuant,
+      });
+    }
 
     setConfirmLoading(true);
     setTimeout(() => {

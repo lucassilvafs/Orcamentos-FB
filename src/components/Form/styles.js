@@ -1,11 +1,5 @@
 import styled from "styled-components";
 
-// export const ContainerCenter = styled.div`
-//   // display: flex;
-//   // flex-direction: column;
-//   // align-items: center;
-// `;
-
 export const Container = styled.div`
   max-width: 1120px;
   margin: 20px auto;
@@ -91,25 +85,6 @@ export const ButtonContainer = styled.div`
 export const InputText = styled.input`
   border-radius: 5px;
 `;
-
-// export const CardContainer = styled.div`
-//   max-width: 1120px;
-//   margin: 20px auto;
-//   width: 98%;
-//   background-color: #fff;
-//   box-shadow: 0px 0px 5px #ccc;
-//   border-radius: 5px;
-//   display: flex;
-//   justify-content: space-around;
-//   padding: 15px 0px;
-//   gap: 10px;
-//   overflow-x: scroll;
-//   // scroll-behavior: smooth;
-
-//   @media (max-width: 750px) {
-//     display: grid;
-//   }
-// `;
 
 export const TopContainer = styled.div`
   max-width: 1120px;

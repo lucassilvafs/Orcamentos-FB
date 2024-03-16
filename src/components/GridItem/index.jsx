@@ -1,10 +1,6 @@
 import React from "react";
 import * as C from "./styles";
-import {
-  FaRegArrowAltCircleUp,
-  FaRegArrowAltCircleDown,
-  FaTrash,
-} from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 
 const GridItem = ({ item, onDelete }) => {
   return (
@@ -14,13 +10,6 @@ const GridItem = ({ item, onDelete }) => {
       <C.TdNumber>R$ {Number(item.unitValue).toFixed(2)}</C.TdNumber>
       <C.TdNumber>{item.quant}</C.TdNumber>
       <C.TdNumber>R$ {Number(item.total).toFixed(2)}</C.TdNumber>
-      {/* <C.Td alignCenter>
-        {item.expense ? (
-          <FaRegArrowAltCircleDown color="red" />
-        ) : (
-          <FaRegArrowAltCircleUp color="green" />
-        )}
-      </C.Td> */}
       <C.TdNumber alignCenter>
         <FaTrash style={{ cursor: "pointer" }} onClick={() => onDelete(item.id)} />
       </C.TdNumber>

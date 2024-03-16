@@ -2,7 +2,7 @@ import React from "react";
 import * as C from "./styles";
 import { FaTrash, FaRegEdit} from "react-icons/fa";
 
-const GridItem = ({ item, onDelete, onEdit }) => {
+const GridItemProduct = ({ item, onDelete, onEdit }) => {
   return (
     <C.Tr>
       <C.TdText>{item.name}</C.TdText>
@@ -17,4 +17,4 @@ const GridItem = ({ item, onDelete, onEdit }) => {
   );
 };
 
-export default GridItem;
+export default GridItemProduct;

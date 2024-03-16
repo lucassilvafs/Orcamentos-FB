@@ -4,7 +4,7 @@ import * as C from "./styles";
 import Firebase from "../../services/firebaseConnection";
 import { doc, deleteDoc, getFirestore } from "firebase/firestore";
 
-const Grid = ({ itens, setItens, onEdit }) => {
+const GridProduct = ({ itens, setItens, onEdit }) => {
   const db = getFirestore(Firebase);
 
   const onDelete = async(name) => {
@@ -36,4 +36,4 @@ const Grid = ({ itens, setItens, onEdit }) => {
   );
 };
 
-export default Grid;
+export default GridProduct;
