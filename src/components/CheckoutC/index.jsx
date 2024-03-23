@@ -3,7 +3,7 @@ import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
 
-const Checkout = () => {
+const CheckoutC = React.forwardRef((props, ref) => {
   const [order, setOrder] = useState({});
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +30,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="container">
+    <div ref={ref} className="container">
       <header className="header">
         <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
         <section className="header-info">
@@ -130,6 +130,6 @@ const Checkout = () => {
       </footer>
     </div>
   );
-};
+});
 
-export default Checkout;
+export default CheckoutC;

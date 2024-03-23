@@ -3,10 +3,12 @@ import Grid from "../Grid";
 import Resume from "../Resume";
 import * as C from "./styles";
 import CardItem from "../CardItem";
+import CheckoutC from "../CheckoutC";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useReactToPrint } from 'react-to-print';
 
 const ITEM_WIDTH = 230; // largura de cada item mais(+) o espaço entre eles;
 
@@ -26,6 +28,12 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
 
   const db = getFirestore(Firebase);
   const productsCollectionRef = collection(db, "products");
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
 
   useEffect(() => {
     if(orderInfo) {
@@ -187,6 +195,10 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
       <C.GridContainer>
         <Grid itens={productsList} setItens={setProductsList} />
       </C.GridContainer>
+
+      <div style={{ display: "none" }}><CheckoutC ref={componentRef} /></div>
+      <button onClick={handlePrint}>Print this out!</button>
+
       <Resume total={total} orderInfo={[clientName, production, payment]} reloadPage={reloadPage} />
     </>
   );
