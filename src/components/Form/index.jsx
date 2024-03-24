@@ -54,24 +54,24 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
   });
 
   const handleShare = () => {
-    if (!navigator.canShare) {
-      // resultPara.textContent = "navigator.canShare() not supported.";
-      console.log('navigator.canShare() not supported.');
-    } else if (navigator.canShare(shareData)) {
-      // resultPara.textContent =
-      //   "navigator.canShare() supported. We can use navigator.share() to send the data.";
-      console.log('navigator.canShare() supported. We can use navigator.share() to send the data.');
-    } else {
-      // resultPara.textContent = "Specified data cannot be shared.";
-      console.log('Specified data cannot be shared.');
-    }
-
-
-    // if (navigator.share && navigator.canShare(shareData)) {
-    //   navigator.share(shareData);
+    // if (!navigator.canShare) {
+    //   // resultPara.textContent = "navigator.canShare() not supported.";
+    //   console.log('navigator.canShare() not supported.');
+    // } else if (navigator.canShare(shareData)) {
+    //   // resultPara.textContent =
+    //   //   "navigator.canShare() supported. We can use navigator.share() to send the data.";
+    //   console.log('navigator.canShare() supported. We can use navigator.share() to send the data.');
     // } else {
-    //   console.log('nao deu');
+    //   // resultPara.textContent = "Specified data cannot be shared.";
+    //   console.log('Specified data cannot be shared.');
     // }
+
+
+    if (navigator.share && navigator.canShare(shareData)) {
+      navigator.share(shareData);
+    } else {
+      console.log('nao deu');
+    }
     // await saveAs(blob, `invoice.pdf`);
     // window.location.href = `mailto:?subject=${encodeURIComponent(`Invoice`)}&body=${encodeURIComponent(`Kindly find attached invoice`)}`;
 }
