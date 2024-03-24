@@ -9,8 +9,27 @@ import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useReactToPrint } from 'react-to-print';
+import { PDFViewer } from "@react-pdf/renderer";
+import { BlobProvider, PDFDownloadLink } from '@react-pdf/renderer';
+import { HiOutlineDownload, HiOutlinePrinter } from 'react-icons/hi';
+import { FiShare2 } from 'react-icons/fi';
+// import { saveAs } from "file-saver";
 
 const ITEM_WIDTH = 230; // largura de cada item mais(+) o espaço entre eles;
+
+const styles = {
+  container: { width: '220px', borderRadius: '5px', padding: '15px 12px', display: 'flex', flexDirection: 'column', gap: '15px', boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)" },
+  flex: { width: '100%', display: 'flex', gap: '5px', alignItems: 'center' },
+  bold: { fontSize: '13px', fontWeight: 600 },
+  thin: { fontSize: '11px', color: '#6f6f6f', fontWeight: 500 },
+  btn: { borderRadius: '3px', border: '1px solid gray', display: 'flex', alignItems: 'center', gap: '2px', padding: '3px', fontSize: '11px', color: '#4f4f4f', fontWeight: 600, cursor: 'pointer', userSelect: 'none' }
+}
+
+const shareData = {
+  title: 'Share', 
+  text:  'whatevs',                 
+  url:   'https://developer.mozilla.org'
+};
 
 const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setOrderInfo }) => {
   const [clientName, setClientName] = useState("");
@@ -33,6 +52,29 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const handleShare = () => {
+    if (!navigator.canShare) {
+      // resultPara.textContent = "navigator.canShare() not supported.";
+      console.log('navigator.canShare() not supported.');
+    } else if (navigator.canShare(shareData)) {
+      // resultPara.textContent =
+      //   "navigator.canShare() supported. We can use navigator.share() to send the data.";
+      console.log('navigator.canShare() supported. We can use navigator.share() to send the data.');
+    } else {
+      // resultPara.textContent = "Specified data cannot be shared.";
+      console.log('Specified data cannot be shared.');
+    }
+
+
+    // if (navigator.share && navigator.canShare(shareData)) {
+    //   navigator.share(shareData);
+    // } else {
+    //   console.log('nao deu');
+    // }
+    // await saveAs(blob, `invoice.pdf`);
+    // window.location.href = `mailto:?subject=${encodeURIComponent(`Invoice`)}&body=${encodeURIComponent(`Kindly find attached invoice`)}`;
+}
 
 
   useEffect(() => {
@@ -110,6 +152,11 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
   };
 
   const reloadPage = () => window.location.reload();
+
+  const shareToWhatsApp = () => {
+    let newURL = `https://api.whatsapp.com/send?text=https://firebasestorage.googleapis.com/v0/b/databasefb-6948c.appspot.com/o/Fortaleza%20Brindes.pdf?alt=media&token=de1f03ee-3a85-48c6-b2d3-fa0b362fb280`;
+    window.open(newURL, "_blank");
+  }
 
   return (
     <>
@@ -197,7 +244,40 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo, setO
       </C.GridContainer>
 
       <div style={{ display: "none" }}><CheckoutC ref={componentRef} /></div>
-      <button onClick={handlePrint}>Print this out!</button>
+      <button onClick={shareToWhatsApp}>Print this out!</button>
+
+      <C.Button 
+        className='myWonderfulButton'
+        onClick={handleShare}
+      >
+        Compartilhar
+      </C.Button>
+
+      <PDFDownloadLink document={<CheckoutC />} fileName='invoice.pdf'>
+                    <div style={styles.btn}>
+                        <HiOutlineDownload size={14} />
+                        <span>Download</span>
+                    </div>
+                </PDFDownloadLink>
+
+                <BlobProvider document={<CheckoutC />}>
+                    {({ url, blob }) => (
+                        <a href={url} target="_blank" style={styles.btn}>
+                            <HiOutlinePrinter size={14} />
+                            <span>Print</span>
+                        </a>
+                    )}
+                </BlobProvider>
+
+
+                <BlobProvider document={<CheckoutC />}>
+                    {({ url, blob }) => (
+                        <div style={styles.btn} onClick={() => handleShare(url, blob)} >
+                            <FiShare2 size={14} />
+                            <span>Share</span>
+                        </div>
+                    )}
+                </BlobProvider>
 
       <Resume total={total} orderInfo={[clientName, production, payment]} reloadPage={reloadPage} />
     </>
