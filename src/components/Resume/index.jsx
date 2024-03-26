@@ -99,7 +99,7 @@ function CreatePDFfromHTML(shareTarget) {
           <C.Total>R$ {total}</C.Total>
         </C.Footer>
         <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
-        <C.ButtonShare onClick={() => CreatePDFfromHTML(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
+        <C.ButtonShare onClick={() => onShare(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
         <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
       </C.ResumeContainer>
     </C.Container>
