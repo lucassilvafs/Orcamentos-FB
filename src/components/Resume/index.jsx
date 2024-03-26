@@ -52,6 +52,9 @@ function CreatePDFfromHTML(shareTarget) {
       }
       pdf.save("Your_PDF_Name.pdf");
       shareTarget.current.hide();
+      navigator.share(pdf).then(() => {
+        console.log('Shared successfully');
+      });
   });
 }
 
