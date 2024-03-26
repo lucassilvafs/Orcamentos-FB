@@ -12,7 +12,7 @@ import html2canvas from 'html2canvas';
 
 const Resume = ({ total, reloadPage, handleCheckout, shareTarget }) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  // const shareTarget = useRef(null);
+  const shareTarget = useRef(null);
 
   async function onShare(shareTarget) {
     if (!shareTarget.current) {
@@ -54,7 +54,7 @@ const Resume = ({ total, reloadPage, handleCheckout, shareTarget }) => {
   };
 
   return (
-    <C.Container>
+    <C.Container ref={shareTarget}>
       <Modal
         title="Atenção"
         open={openModalDelete}
