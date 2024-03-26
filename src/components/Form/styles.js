@@ -177,7 +177,7 @@ export const ButtonScroll = styled.button`
   align-self: center;
   height: 40px;
   width: 40px;
-  margin: 0px 70px;
+  margin: 0px 40px;
   padding: 5px 10px;
   border: none;
   border-radius: 100%;

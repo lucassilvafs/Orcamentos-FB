@@ -10,7 +10,6 @@ const GridProduct = ({ itens, setItens, onEdit }) => {
   const onDelete = async(name) => {
     const products = itens.filter((product) => product.name !== name);
     setItens(products);
-    // localStorage.setItem("products", JSON.stringify(newArray));
 
     const productToDelete = itens.find((product) => product.name === name);
     await deleteDoc(doc(db, "products", productToDelete.name));

@@ -69,7 +69,7 @@ export const Total = styled.span`
 `;
 
 
-export const Button = styled.button`
+export const ButtonDownload = styled.button`
   margin-bottom: 20px;
   padding: 10px 40px;
   border: 1px solid;
@@ -87,6 +87,36 @@ export const Button = styled.button`
 
   @media (max-width: 750px) {
     font-size: 16px;
+  }
+
+  @media (pointer: coarse) {
+    display: none;
+  }
+`; 
+
+export const ButtonShare = styled.button`
+  display: none;
+  margin-bottom: 20px;
+  padding: 10px 40px;
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: #F29215;
+  cursor: pointer;
+  font-size: 18px;
+  color: #F29215;
+  background-color: #fff;
+  transition: all 0.25s ease;
+  &:hover {
+    background-color: #F29215;
+    color: #fff;
+}
+
+  @media (max-width: 750px) {
+    font-size: 16px;
+  }
+
+  @media (pointer: coarse) {
+    display:block;
   }
 `; 
 
@@ -110,16 +140,3 @@ export const ButtonErase = styled.button`
     font-size: 16px;
   }
 `; 
-
-// .icon-expand{
-//   &::after{
-//     box-shadow: inset 0 0 0 1px $red;
-//   }
-//   &::before{
-//     background: $red;
-//     box-shadow: inset 0 0 0 $icon-size $background;
-//   }
-//   &:hover::before{
-//     box-shadow: inset 0 0 0 1px $background;
-//   }
-// }

@@ -126,7 +126,7 @@ const Checkout = () => {
         <p>
           www.fortalezabrindes.com.br | 2024
         </p>
-        <button type="button" className="btn-pdf" onClick={() => handleCheckout()}>Baixar PDF</button>
+        {/* <button type="button" className="btn-pdf" onClick={() => handleCheckout()}>Baixar PDF</button> */}
       </footer>
     </div>
   );

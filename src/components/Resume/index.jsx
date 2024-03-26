@@ -1,55 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ResumeItem from "../ResumeItem";
+import React, { useState } from "react";
 import * as C from "./styles";
 import { Modal } from 'antd';
-import {
-  FaDollarSign,
-} from "react-icons/fa";
 
-const Resume = ({ total, orderInfo, reloadPage }) => {
+const shareData = {
+  title: 'Share', 
+  text:  'whatevs',                 
+  url:   'https://developer.mozilla.org'
+};
+
+const Resume = ({ total, reloadPage, handleCheckout }) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [categoryIdDelete, setCategoryIdDelete] = useState();
 
-  const navigate = useNavigate();
-
-  const handleCheckout = () => {
-    const arrayProducts = JSON.parse(localStorage.getItem('products'));
-    const generateID = () => Math.round(Math.random() * 1000);
-
-    const order = {
-      id: generateID(),
-      clientName: orderInfo[0],
-      production: orderInfo[1],
-      payment: orderInfo[2],
-      products: arrayProducts,
-      total:total
-    };
-    localStorage.setItem("order", JSON.stringify(order));
-    return navigate("checkout");
+  const handleShare = () => {
+    if (navigator.share && navigator.canShare(shareData)) {
+      navigator.share(shareData);
+      return;
+    }
+    console.log('Não foi possível compartilhar :/');
   }
-
-  const handleEraseAll = () => {
-    localStorage.removeItem('products');
-    localStorage.removeItem('order');
-  }
-
-  const handleOnClickCategory = () => {
-    // navigate(CategoryRoutesEnum.CATEGORY_INSERT);
-  };
 
   const handleOpenModalDelete = () => {
-    // setCategoryIdDelete(categoryId);
     setOpenModalDelete(true);
   };
 
   const handleCloseModalDelete = () => {
-    // setCategoryIdDelete(undefined);
     setOpenModalDelete(false);
   };
 
   const handleConfirmDelete = () => {
-    // setCategoryIdDelete(undefined);
     localStorage.removeItem('products');
     localStorage.removeItem('order');
     reloadPage();
@@ -58,7 +36,6 @@ const Resume = ({ total, orderInfo, reloadPage }) => {
 
   return (
     <C.Container>
-      {/* <ResumeItem title="Total" Icon={FaDollarSign} value={total} /> */}
       <Modal
         title="Atenção"
         open={openModalDelete}
@@ -72,11 +49,11 @@ const Resume = ({ total, orderInfo, reloadPage }) => {
       <C.ResumeContainer>
         <C.HeaderTitle>Total</C.HeaderTitle>
         <C.Footer>
-          {/* <FaDollarSign /> */}
           <C.Total>R$ {total}</C.Total>
         </C.Footer>
-        <C.Button onClick={() => handleCheckout()}>Gerar Orçamento</C.Button>
-        <C.ButtonErase onClick={() => handleOpenModalDelete()}>Apagar Tudo</C.ButtonErase>
+        <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
+        <C.ButtonShare onClick={handleShare}>Compartilhar Arquivo</C.ButtonShare>
+        <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
       </C.ResumeContainer>
     </C.Container>
   );
