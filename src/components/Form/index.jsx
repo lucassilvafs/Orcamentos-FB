@@ -29,6 +29,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
 
   const componentRef = useRef();
   const containerRef = useRef();
+  const shareTarget = useRef(null);
 
   useEffect(() => {
     if(orderInfo) {
@@ -210,12 +211,13 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         <Grid itens={productsList} setItens={setProductsList} />
       </C.GridContainer>
 
-      <div style={{ display:"none" }}><PdfFile props={rerender} ref={componentRef} /></div>
+      <div ref={shareTarget} style={{ display:"none" }}><PdfFile  props={rerender} ref={componentRef} /></div>
 
       <Resume 
         total={total} 
         reloadPage={reloadPage}
         handleCheckout={handleCheckout}
+        shareTarget={shareTarget}
       />
     </>
   );
