@@ -10,7 +10,7 @@ import html2canvas from 'html2canvas';
 //   url:   'https://developer.mozilla.org'
 // };
 
-const Resume = ({ total, reloadPage, handleCheckout, shareTarget }) => {
+const Resume = ({ total, reloadPage, handleCheckout }) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const shareTarget = useRef(null);
 
