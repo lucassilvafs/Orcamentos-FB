@@ -31,32 +31,45 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
   }
 
   //Create PDf from HTML...
-function CreatePDFfromHTML(shareTarget) {
-  var HTML_Width = shareTarget.current.width();
-  var HTML_Height = shareTarget.current.height();
-  var top_left_margin = 15;
-  var PDF_Width = HTML_Width + (top_left_margin * 2);
-  var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
-  var canvas_image_width = HTML_Width;
-  var canvas_image_height = HTML_Height;
+  function getPDF(shareTarget){
 
-  var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+		var HTML_Width = shareTarget.current.offsetWidth;
+		var HTML_Height = shareTarget.current.offsetHeight;
+		var top_left_margin = 15;
+		var PDF_Width = HTML_Width+(top_left_margin*2);
+		var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+		var canvas_image_width = HTML_Width;
+		var canvas_image_height = HTML_Height;
+		
+		var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+		
 
-  html2canvas(shareTarget.current).then(function (canvas) {
-      var imgData = canvas.toDataURL("image/jpeg", 1.0);
-      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
-      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
-      for (var i = 1; i <= totalPDFPages; i++) { 
-          pdf.addPage(PDF_Width, PDF_Height);
-          pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-      }
-      pdf.save("Your_PDF_Name.pdf");
-      shareTarget.current.hide();
-      navigator.share(pdf).then(() => {
+		html2canvas(shareTarget.current,{allowTaint:true}).then(function(canvas) {
+			canvas.getContext('2d');
+			
+			console.log(canvas.height+"  "+canvas.width);
+			
+			
+			var imgData = canvas.toDataURL("image/jpeg", 1.0);
+			var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+		  pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+			
+			
+			for (var i = 1; i <= totalPDFPages; i++) { 
+				pdf.addPage(PDF_Width, PDF_Height);
+				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+			}
+			
+		  pdf.save("HTML-Document.pdf");
+
+      const shareData = {
+        files: pdf,
+      };
+      navigator.share(shareData).then(() => {
         console.log('Shared successfully');
       });
-  });
-}
+    });
+	};
 
   // const handleShare = () => {
   //   if (navigator.share && navigator.canShare(shareData)) {
@@ -99,7 +112,7 @@ function CreatePDFfromHTML(shareTarget) {
           <C.Total>R$ {total}</C.Total>
         </C.Footer>
         <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
-        <C.ButtonShare onClick={() => onShare(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
+        <C.ButtonShare onClick={() => getPDF(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
         <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
       </C.ResumeContainer>
     </C.Container>

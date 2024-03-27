@@ -213,7 +213,7 @@ export const HeaderTitle = styled.p`
   align-text: center;
 
   @media (max-width: 750px) {
-    margin-left: 110px;
+    margin-left: 100px;
   }
 `;
 
@@ -227,7 +227,7 @@ export const InputSearch = styled.input`
   
   @media (max-width: 750px) {
     width: 230px;
-    margin-left: 75px;
+    margin-left: 65px;
   }
 `;
 
