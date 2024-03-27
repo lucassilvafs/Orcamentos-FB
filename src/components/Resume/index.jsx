@@ -153,7 +153,7 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
         </C.Footer>
         <C.HeaderTitle>{ test }</C.HeaderTitle>
         <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
-        <C.ButtonShare onClick={() => handleShare(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
+        <C.ButtonShare onClick={() => getPDF(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
         <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
       </C.ResumeContainer>
     </C.Container>
