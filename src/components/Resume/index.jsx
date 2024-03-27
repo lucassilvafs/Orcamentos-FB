@@ -71,14 +71,18 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
       console.log(blob);
       const filesArray = [new File([blob], 'htmldiv.pdf', { type: blob.type, lastModified: new Date().getTime() })];
       console.log(filesArray);
-      const shareData = {
-        file: blob,
-      };
-      if (navigator.share && navigator.canShare(shareData)) {
-        navigator.share(shareData).then(() => console.log('Successful share')).catch((error) => console.log('Error sharing', error));
-      } else {
-        console.log("Web Share API is not supported in your browser.");
-      }
+      const files = [filesArray];
+
+      // Share PDF file if supported.
+      if (navigator.canShare({ files })) navigator.share({ files });
+      // const shareData = {
+      //   file: blob,
+      // };
+      // if (navigator.share && navigator.canShare(shareData)) {
+      //   navigator.share(shareData).then(() => console.log('Successful share')).catch((error) => console.log('Error sharing', error));
+      // } else {
+      //   console.log("Web Share API is not supported in your browser.");
+      // }
     });
 	};
 
