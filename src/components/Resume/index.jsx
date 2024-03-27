@@ -3,43 +3,60 @@ import * as C from "./styles";
 import { Modal } from 'antd';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
-// const shareData = {
-//   title: 'Share', 
-//   text:  'whatevs',                 
-//   url:   'https://developer.mozilla.org'
-// };
-
-const Resume = ({ total, reloadPage, handleCheckout }) => {
+const Resume = ({ total, reloadPage, handleCheckout, clientName }) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [test, setTest] = useState('nao apertou');
 
   const shareTarget = useRef(null);
+  const storage = getStorage();
 
-  async function onShare(shareTarget) {
-    if (!shareTarget.current) {
-      return;
-    }
-    const canvas = await html2canvas(shareTarget.current);
-    const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-    const blob = await (await fetch(dataUrl)).blob();
-    const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
-    console.log(dataUrl);
-    console.log(blob);
-    console.log(filesArray);
+  // async function onShare(shareTarget) {
+  //   if (!shareTarget.current) {
+  //     return;
+  //   }
+  //   const canvas = await html2canvas(shareTarget.current);
+  //   const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
+  //   const blob = await (await fetch(dataUrl)).blob();
+  //   const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
+  //   console.log(dataUrl);
+  //   console.log(blob);
+  //   console.log(filesArray);
     
-    const shareData = {
-      files: filesArray,
-    };
-    navigator.share(shareData).then(() => {
-      console.log('Shared successfully');
-    });
+  //   const shareData = {
+  //     files: filesArray,
+  //   };
+  //   navigator.share(shareData).then(() => {
+  //     console.log('Shared successfully');
+  //   });
+  // }
+
+  const getUrl = () => {
+    console.log("cheguei");
+    getDownloadURL(ref(storage, `orçamentos/${clientName}.pdf`))
+      .then((url) => {
+        const shareData = {
+          title: `${clientName}.pdf`,
+          url: url,
+        };
+
+        if (navigator.share && navigator.canShare(shareData)) {
+          navigator.share(shareData)
+          .then(() => console.log('Successful share'))
+          .catch((error) => console.log('Error sharing', error));
+          return;
+        }
+
+        console.log("Web Share API is not supported in your browser.");
+        console.log(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  //Create PDf from HTML...
-  function getPDF(shareTarget){
-
+  const getPDF = (shareTarget) => {
 		var HTML_Width = shareTarget.current.offsetWidth;
 		var HTML_Height = shareTarget.current.offsetHeight;
 		var top_left_margin = 15;
@@ -51,7 +68,7 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
 		var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
 		
 
-		html2canvas(shareTarget.current,{allowTaint:true}).then(function(canvas) {
+		html2canvas(shareTarget.current,{allowTaint:true}).then(async function async(canvas) {
 			canvas.getContext('2d');
 			
 			console.log(canvas.height+"  "+canvas.width);
@@ -70,19 +87,49 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
 			
 		  // pdf.save("HTML-Document.pdf");
 
-      const blob = pdf.output('blob');
-      console.log(blob);
-      const filesArray = [new File([blob], 'htmldiv.pdf', { type: blob.type, lastModified: new Date().getTime() })];
-      console.log(filesArray);
-      const files = [filesArray];
+      const pdfBlob = pdf.output('blob');
 
-      // Share PDF file if supported.
-      if (navigator.share && navigator.canShare({ files })) {
-        navigator.share({ files });
-      } else {
-        setTest('apertou');
-        console.log('apertouu');
-      }
+      // const storageRef = Firebase.storage().ref();
+      // const pdfRef = storageRef.child(`${clientName}.pdf`);
+      const storageRef = ref(storage, `orçamentos/${clientName}.pdf`);
+
+      uploadBytes(storageRef, pdfBlob).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        getUrl();
+      });
+
+      // setTimeout(() => {
+      //   getUrl();
+      // }, 3000);
+
+      // try {
+      //   const snapshot = await pdfRef.put(pdfBlob);
+      //   console.log('PDF enviado com sucesso para o Firebase Storage.');
+    
+      //   // Obtém o URL de download do PDF
+      //   const downloadURL = await snapshot.ref.getDownloadURL();
+      //   console.log('URL de download do PDF:', downloadURL);
+
+      //   const files = {
+      //     title: `Orçamento-${clientName}`,
+      //     url: downloadURL,
+      //   };
+
+      //   // Share PDF file if supported.
+      //   if (navigator.share && navigator.canShare({ files })) {
+      //     navigator.share({ files });
+      //   } else {
+      //     setTest(test === 'nao apertou' ? 'apertou' : 'nao apertou');
+      //     console.log('apertouu');
+      //   }
+    
+      //   // Faça o que quiser com o URL de download, como exibi-lo na interface do usuário ou armazená-lo em algum lugar.
+      // } catch (error) {
+      //   console.error('Erro ao enviar PDF para o Firebase Storage:', error);
+      // }
+    
+
+      // const filesArray = [new File([blob], 'htmldiv.pdf', { type: blob.type, lastModified: new Date().getTime() })];
 
       // const shareData = {
       //   file: blob,
@@ -95,21 +142,21 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
     });
 	};
 
-  const handleShare = async () => {
-    const response = await fetch("https://firebasestorage.googleapis.com/v0/b/databasefb-6948c.appspot.com/o/Fortaleza%20Brindes.pdf?alt=media&token=de1f03ee-3a85-48c6-b2d3-fa0b362fb280");
-    const buffer = await response.arrayBuffer();
+  // const handleShare = async () => {
+  //   const response = await fetch("https://firebasestorage.googleapis.com/v0/b/databasefb-6948c.appspot.com/o/Fortaleza%20Brindes.pdf?alt=media&token=de1f03ee-3a85-48c6-b2d3-fa0b362fb280");
+  //   const buffer = await response.arrayBuffer();
   
-    const pdf = new File([buffer], "hello.pdf", { type: "application/pdf" });
-    const files = [pdf];
+  //   const pdf = new File([buffer], "hello.pdf", { type: "application/pdf" });
+  //   const files = [pdf];
 
-    console.log(buffer);
-    console.log(pdf);
+  //   console.log(buffer);
+  //   console.log(pdf);
   
-    // Share PDF file if supported.
-    if (navigator.canShare({ files })){
-      navigator.share({ files });
-    }
-  };
+  //   // Share PDF file if supported.
+  //   if (navigator.canShare({ files })){
+  //     navigator.share({ files });
+  //   }
+  // };
 
   // const handleShare = () => {
   //   if (navigator.share && navigator.canShare(shareData)) {

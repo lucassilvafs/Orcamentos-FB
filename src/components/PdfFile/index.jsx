@@ -3,7 +3,7 @@ import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
 
-const PdfFile = React.forwardRef(({ props }, ref) => {
+const PdfFile = React.forwardRef(({ props, getPdf, handleCheckout }, ref) => {
   const [order, setOrder] = useState({});
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
