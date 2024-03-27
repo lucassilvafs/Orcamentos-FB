@@ -60,14 +60,18 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
 				pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
 			}
 			
-		  pdf.save("HTML-Document.pdf");
-
+		  // pdf.save("HTML-Document.pdf");
       const shareData = {
-        files: pdf,
-      };
-      navigator.share(shareData).then(() => {
-        console.log('Shared successfully');
-      });
+        title: "meu titulo",
+        text: "meu texto",
+        file: pdf,
+      }
+
+      if (navigator.share && navigator.canShare(shareData)) {
+        navigator.share(shareData).then(() => console.log('Successful share')).catch((error) => console.log('Error sharing', error));
+      } else {
+        console.log("Web Share API is not supported in your browser.");
+      }
     });
 	};
 
