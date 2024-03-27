@@ -3,6 +3,7 @@ import * as C from "./styles";
 import { Modal } from 'antd';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 // const shareData = {
 //   title: 'Share', 
@@ -94,6 +95,22 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
     });
 	};
 
+  const handleShare = async () => {
+    const response = await fetch("https://firebasestorage.googleapis.com/v0/b/databasefb-6948c.appspot.com/o/Fortaleza%20Brindes.pdf?alt=media&token=de1f03ee-3a85-48c6-b2d3-fa0b362fb280");
+    const buffer = await response.arrayBuffer();
+  
+    const pdf = new File([buffer], "hello.pdf", { type: "application/pdf" });
+    const files = [pdf];
+
+    console.log(buffer);
+    console.log(pdf);
+  
+    // Share PDF file if supported.
+    if (navigator.canShare({ files })){
+      navigator.share({ files });
+    }
+  };
+
   // const handleShare = () => {
   //   if (navigator.share && navigator.canShare(shareData)) {
   //     navigator.share(shareData);
@@ -136,7 +153,7 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
         </C.Footer>
         <C.HeaderTitle>{ test }</C.HeaderTitle>
         <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
-        <C.ButtonShare onClick={() => getPDF(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
+        <C.ButtonShare onClick={() => handleShare(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
         <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
       </C.ResumeContainer>
     </C.Container>
