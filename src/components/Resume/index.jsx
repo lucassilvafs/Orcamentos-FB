@@ -12,6 +12,8 @@ import { jsPDF } from "jspdf";
 
 const Resume = ({ total, reloadPage, handleCheckout }) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [test, setTest] = useState('nao apertou');
+
   const shareTarget = useRef(null);
 
   async function onShare(shareTarget) {
@@ -74,7 +76,13 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
       const files = [filesArray];
 
       // Share PDF file if supported.
-      if (navigator.canShare({ files })) navigator.share({ files });
+      if (navigator.share && navigator.canShare({ files })) {
+        navigator.share({ files });
+      } else {
+        setTest('apertou');
+        console.log('apertouu');
+      }
+
       // const shareData = {
       //   file: blob,
       // };
@@ -126,6 +134,7 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
         <C.Footer>
           <C.Total>R$ {total}</C.Total>
         </C.Footer>
+        <C.HeaderTitle>{ test }</C.HeaderTitle>
         <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
         <C.ButtonShare onClick={() => getPDF(shareTarget)}>Compartilhar Arquivo</C.ButtonShare>
         <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
