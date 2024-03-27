@@ -63,7 +63,6 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
 		  // pdf.save("HTML-Document.pdf");
       const shareData = {
         title: "meu titulo",
-        text: "meu texto",
         file: pdf,
       }
 
