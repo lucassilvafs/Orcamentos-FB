@@ -19,9 +19,13 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
       return;
     }
     const canvas = await html2canvas(shareTarget.current);
-    const dataUrl = canvas.toDataURL();
+    const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
     const blob = await (await fetch(dataUrl)).blob();
     const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
+    console.log(dataUrl);
+    console.log(blob);
+    console.log(filesArray);
+    
     const shareData = {
       files: filesArray,
     };
@@ -50,7 +54,8 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
 			console.log(canvas.height+"  "+canvas.width);
 			
 			
-			var imgData = canvas.toDataURL("image/jpeg", 1.0);
+			// var imgData = canvas.toDataURL("image/jpeg", 1.0);
+      var imgData = canvas.toDataURL("application/pdf", 1.0);
 			var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
 		  pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
 			
@@ -61,10 +66,14 @@ const Resume = ({ total, reloadPage, handleCheckout }) => {
 			}
 			
 		  // pdf.save("HTML-Document.pdf");
-      const shareData = {
-        file: pdf,
-      }
 
+      const blob = pdf.output('blob');
+      console.log(blob);
+      const filesArray = [new File([blob], 'htmldiv.pdf', { type: blob.type, lastModified: new Date().getTime() })];
+      console.log(filesArray);
+      const shareData = {
+        file: filesArray,
+      };
       if (navigator.share && navigator.canShare(shareData)) {
         navigator.share(shareData).then(() => console.log('Successful share')).catch((error) => console.log('Error sharing', error));
       } else {
