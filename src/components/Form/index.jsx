@@ -17,6 +17,7 @@ import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
 import "../PdfFile/styles.css";
+import { useNavigate } from "react-router-dom";
 
 const db = getFirestore(Firebase);
 const productsCollectionRef = collection(db, "products");
@@ -43,6 +44,8 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
   const componentRef = useRef();
   const containerRef = useRef();
   const shareTarget = useRef(null);
+
+  const navigate = useNavigate();
 
   // const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
 
