@@ -120,7 +120,10 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     setRerender(!rerender);
 
     setTimeout(() => handlePrint(), 1000);
+    return navigate("checkout");
   }
+
+  
 
   const handleChange = (target) => {
     setInputText(target.value);
