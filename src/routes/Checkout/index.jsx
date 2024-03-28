@@ -40,21 +40,22 @@ const Checkout = () => {
     });
   };
 
-  const printDocument = () => {
-    const input = document.getElementById('divToPrint');
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'JPEG', 0, 0);
-        // pdf.output('dataurlnewwindow');
-        pdf.save("download.pdf");
-      })
-    ;
-  }
+  // const printDocument = () => {
+  //   const input = document.getElementById('divToPrint');
+  //   html2canvas(input)
+  //     .then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF();
+  //       pdf.addImage(imgData, 'JPEG', 0, 0);
+  //       // pdf.output('dataurlnewwindow');
+  //       pdf.save("download.pdf");
+  //     })
+  //   ;
+  // }
 
   return (
     <div id="divToPrint" className="container">
+      <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
       <header className="header">
         <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
         <section className="header-info">
@@ -150,7 +151,7 @@ const Checkout = () => {
         <p>
           www.fortalezabrindes.com.br | 2024
         </p>
-        <button type="button" className="btn-pdf" onClick={printDocument}>Baixar PDF</button>
+        {/* <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button> */}
       </footer>
     </div>
   );
