@@ -462,7 +462,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
           </C.Footer>
           <C.HeaderTitle>{ test }</C.HeaderTitle>
           <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
-          <C.ButtonShare onClick={onShare}>Compartilhar Arquivo</C.ButtonShare>
+          <C.ButtonShare onClick={handleCheckout}>Compartilhar Arquivo</C.ButtonShare>
           <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
         </C.ResumeContainer>
       </C.ResumeDiv>
