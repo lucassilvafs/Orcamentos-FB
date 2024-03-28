@@ -9388,6 +9388,14 @@
   optionalDependencies:
     "fsevents" "^2.3.2"
 
+"react-to-pdf@^1.0.1":
+  "integrity" "sha512-ZsIkY6Z5gg3oBhMbWfl+tYwQ12vpPuuAzvCv+MnXchO8l08tElzRkBNAXxfbQNG/EDOHgE5EvWBlvE7ypt/y9A=="
+  "resolved" "https://registry.npmjs.org/react-to-pdf/-/react-to-pdf-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "html2canvas" "^1.4.1"
+    "jspdf" "^2.5.1"
+
 "react-to-print@^2.15.1":
   "integrity" "sha512-1foogIFbCpzAVxydkhBiDfMiFYhIMphiagDOfcG4X/EcQ+fBPqJ0rby9Wv/emzY1YLkIQy/rEgOrWQT+rBKhjw=="
   "resolved" "https://registry.npmjs.org/react-to-print/-/react-to-print-2.15.1.tgz"

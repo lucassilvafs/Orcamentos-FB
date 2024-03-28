@@ -7,6 +7,8 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
 import { useReactToPrint } from 'react-to-print';
+// import generatePDF, { usePDF } from 'react-to-pdf';
+import ReactToPdf, { usePDF } from 'react-to-pdf';
 import PdfFile from "../PdfFile";
 import { Modal } from 'antd';
 import html2canvas from 'html2canvas';
@@ -42,6 +44,10 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
   const containerRef = useRef();
   const shareTarget = useRef(null);
 
+  // const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
+
+  // const targetRef = useRef();
+
   const [order, setOrder] = useState({});
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,6 +81,23 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     };
     getData();
   }, []);
+
+  const handleSharePDF = async () => {
+    try {
+      const pdfBlob = await ReactToPdf.componentExport(shareTarget.current, { fileName: 'generated_pdf' });
+      const pdfFile = new File([pdfBlob], 'generated_pdf.pdf', { type: 'application/pdf' });
+
+      if (navigator.share) {
+        await navigator.share({
+          files: [pdfFile],
+        });
+      } else {
+        alert('Web Share API is not supported in this browser.');
+      }
+    } catch (error) {
+      console.log('Error generating PDF:', error);
+    }
+  };
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -351,7 +374,25 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         <Grid itens={productsList} setItens={setProductsList} />
       </C.GridContainer>
 
-      <div style={{ display:"none" }}><PdfFile  props={rerender} ref={componentRef} /></div>
+      {/* <ReactToPdf targetRef={componentRef} filename="generated_pdf">
+      {({ toPdf }) => 
+            <button onClick={toPdf} className="get_started">
+              Download
+            </button>
+          }
+      </ReactToPdf> */}
+      {/* <PdfFile props={rerender} ref={componentRef} /> */}
+      <button onClick={handleSharePDF}>Share PDF</button>
+
+      {/* <button onClick={() => toPDF()}>Download PDF</button> */}
+      {/* <div style={{ display:"none" }}><PdfFile props={rerender} ref={componentRef} /></div> */}
+
+      {/* <button onClick={() => generatePDF(targetRef, {filename: 'page.pdf'})}>Download PDF </button> */}
+      {/* <div ref={targetRef}>
+        Content to be included in the PDF
+      </div> */}
+      
+      {/* <div ref={targetRef}><PdfFile props={rerender} ref={componentRef} /></div> */}
       
       <C.ResumeDiv ref={shareTarget}>
         <Modal
@@ -376,15 +417,11 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         </C.ResumeContainer>
       </C.ResumeDiv>
 
-      <div ref={shareTarget} style={{ display:"none" }}>
+      {/* <div ref={shareTarget} style={{ display:"none" }}>
         <PdfFile props={rerender} getPDF={getPDF} handleCheckout={handleCheckout} ref={componentRef} />
-      </div>
+      </div> */}
 
-      <div>
-        <Resume />
-      </div>
-
-      <div id="child-component" ref={ref} className="container">
+      {/* <div id="child-component" ref={ref} className="container">
       <header className="header">
         <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
         <section className="header-info">
@@ -481,7 +518,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
           www.fortalezabrindes.com.br | 2024
         </p>
       </footer>
-    </div>
+    </div> */}
 
       {/* <Resume 
         total={total} 
