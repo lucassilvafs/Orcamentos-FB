@@ -3,6 +3,8 @@ import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
 import generatePDF, { usePDF, Margin } from 'react-to-pdf';
+import html2canvas from 'html2canvas';
+import { jsPDF } from "jspdf";
 
 const Checkout = () => {
   const [order, setOrder] = useState({});
@@ -38,8 +40,21 @@ const Checkout = () => {
     });
   };
 
+  const printDocument = () => {
+    const input = document.getElementById('divToPrint');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        // pdf.output('dataurlnewwindow');
+        pdf.save("download.pdf");
+      })
+    ;
+  }
+
   return (
-    <div className="container">
+    <div id="divToPrint" className="container">
       <header className="header">
         <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
         <section className="header-info">
@@ -135,7 +150,7 @@ const Checkout = () => {
         <p>
           www.fortalezabrindes.com.br | 2024
         </p>
-        {/* <button type="button" className="btn-pdf" onClick={() => handleCheckout()}>Baixar PDF</button> */}
+        <button type="button" className="btn-pdf" onClick={printDocument}>Baixar PDF</button>
       </footer>
     </div>
   );

@@ -272,14 +272,50 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
       });
   }
 
-  const downloadPDF = () => {
-    // you can also pass React refs, e.g. `generatePDF(ref, options)`
-    generatePDF(() => document.getElementById("container"), {
-      method: "open",
-      filename: "function-example.pdf",
-      page: { margin: Margin.MEDIUM },
-    });
+  const downloadPDF = async () => {
+    try {
+      // you can also pass React refs, e.g. `generatePDF(ref, options)`
+      const pdf = await generatePDF(() => document.getElementById("container"), {
+        method: "build",
+        filename: "function-example.pdf",
+        page: { margin: Margin.MEDIUM },
+      });
+      console.log(pdf);
+      const pdfFile = new File([pdf], 'generated_pdf.pdf', { type: 'application/pdf' });
+      console.log(pdfFile);
+      // const pdfBlob = pdfFile.output('blob');
+
+      const storageRef = ref(storage, `orçamentos/generated_pdf.pdf`);
+
+      uploadBytes(storageRef, pdfFile).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        // getUrl();
+      });
+
+      // if (navigator.share) {
+      //   await navigator.share({
+      //     files: [pdfFile],
+      //   });
+      // } else {
+      //   alert('Web Share API is not supported in this browser.');
+      // }
+    } catch (error) {
+      console.error('Error sharing PDF:', error);
+    }
   };
+
+  const printDocument = () => {
+    const input = document.getElementById('divToPrint');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        // pdf.output('dataurlnewwindow');
+        pdf.save("download.pdf");
+      })
+    ;
+  }
 
   const handleOpenModalDelete = () => {
     setOpenModalDelete(true);
