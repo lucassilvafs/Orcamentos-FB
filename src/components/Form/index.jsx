@@ -7,8 +7,8 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Firebase from "../../services/firebaseConnection";
 import { getDocs , getFirestore, collection } from "firebase/firestore";
 import { useReactToPrint } from 'react-to-print';
-// import generatePDF, { usePDF } from 'react-to-pdf';
-import ReactToPdf, { usePDF } from 'react-to-pdf';
+import generatePDF, { usePDF, Margin } from 'react-to-pdf';
+// import ReactToPdf, { usePDF } from 'react-to-pdf';
 import PdfFile from "../PdfFile";
 import { Modal } from 'antd';
 import html2canvas from 'html2canvas';
@@ -83,20 +83,20 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
   }, []);
 
   const handleSharePDF = async () => {
-    try {
-      const pdfBlob = await ReactToPdf.componentExport(shareTarget.current, { fileName: 'generated_pdf' });
-      const pdfFile = new File([pdfBlob], 'generated_pdf.pdf', { type: 'application/pdf' });
+    // try {
+    //   const pdfBlob = await ReactToPdf.componentExport(shareTarget.current, { fileName: 'generated_pdf' });
+    //   const pdfFile = new File([pdfBlob], 'generated_pdf.pdf', { type: 'application/pdf' });
 
-      if (navigator.share) {
-        await navigator.share({
-          files: [pdfFile],
-        });
-      } else {
-        alert('Web Share API is not supported in this browser.');
-      }
-    } catch (error) {
-      console.log('Error generating PDF:', error);
-    }
+    //   if (navigator.share) {
+    //     await navigator.share({
+    //       files: [pdfFile],
+    //     });
+    //   } else {
+    //     alert('Web Share API is not supported in this browser.');
+    //   }
+    // } catch (error) {
+    //   console.log('Error generating PDF:', error);
+    // }
   };
 
   const handlePrint = useReactToPrint({
@@ -270,7 +270,16 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
       navigator.share(shareData).then(() => {
         console.log('Shared successfully');
       });
-    }
+  }
+
+  const downloadPDF = () => {
+    // you can also pass React refs, e.g. `generatePDF(ref, options)`
+    generatePDF(() => document.getElementById("container"), {
+      method: "open",
+      filename: "function-example.pdf",
+      page: { margin: Margin.MEDIUM },
+    });
+  };
 
   const handleOpenModalDelete = () => {
     setOpenModalDelete(true);
@@ -383,6 +392,11 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
       </ReactToPdf> */}
       {/* <PdfFile props={rerender} ref={componentRef} /> */}
       <button onClick={handleSharePDF}>Share PDF</button>
+
+      <C.Button onClick={downloadPDF}>Download PDF</C.Button>
+      <div id="container">
+        <PdfFile props={rerender} ref={componentRef} />
+      </div>
 
       {/* <button onClick={() => toPDF()}>Download PDF</button> */}
       {/* <div style={{ display:"none" }}><PdfFile props={rerender} ref={componentRef} /></div> */}

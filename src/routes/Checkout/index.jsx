@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
+import generatePDF, { usePDF, Margin } from 'react-to-pdf';
 
 const Checkout = () => {
   const [order, setOrder] = useState({});
@@ -26,8 +27,16 @@ const Checkout = () => {
 
   const handleCheckout = () => {
     window.print();
-    
   }
+
+  const downloadPDF = () => {
+    // you can also pass React refs, e.g. `generatePDF(ref, options)`
+    generatePDF(() => document.getElementById("container"), {
+      method: "open",
+      filename: "function-example.pdf",
+      page: { margin: Margin.MEDIUM },
+    });
+  };
 
   return (
     <div className="container">
