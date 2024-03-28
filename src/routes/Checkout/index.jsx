@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
-import generatePDF, { usePDF, Margin } from 'react-to-pdf';
+import generatePDF, { usePDF, Margin, Resolution } from 'react-to-pdf';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import ReactToPdf from 'react-to-pdf';
+import PDFButton from '../../components/PDFButton';
 
 const Checkout = () => {
   const [order, setOrder] = useState({});
@@ -16,6 +19,46 @@ const Checkout = () => {
   const monthData = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const year = new Date().getFullYear();
   const month = monthData[actualMonth-1];
+
+  const componentRef = useRef();
+  const storage = getStorage();
+
+  const handleGeneratePDF = async (toPdf) => {
+    try {
+      const options = {
+        method: 'build',
+        fileName: 'generated_pdf', // Nome do arquivo PDF
+        page: { margin: 10 }, // Margens da página
+        scale: 1.5, // Escala do PDF
+        image: { type: 'jpeg', quality: 0.98 }, // Configurações de imagem
+        html2canvas: { scale: 2 }, // Configurações do html2canvas
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, // Configurações do jsPDF
+      };
+
+      const pdfBlob = await toPdf(options); // Passando as opções para gerar o PDF
+      console.log(pdfBlob);
+      const storageRef = ref(storage, 'orçamentos/teste.pdf');
+
+      uploadBytes(storageRef, pdfBlob).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        // getUrl();
+      }); // Upload do PDF para o Firebase Storage
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
+  // const uploadPDFToFirebase = async (pdfBlob) => {
+  //   try {
+  //     const storageRef = firebase.storage().ref();
+  //     const pdfRef = storageRef.child('generated_pdf.pdf');
+  //     await pdfRef.put(pdfBlob);
+  //     console.log('PDF uploaded successfully to Firebase Storage.');
+  //   } catch (error) {
+  //     console.error('Error uploading PDF to Firebase Storage:', error);
+  //   }
+  // };
+
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('order'));
@@ -33,12 +76,55 @@ const Checkout = () => {
 
   const downloadPDF = () => {
     // you can also pass React refs, e.g. `generatePDF(ref, options)`
-    generatePDF(() => document.getElementById("container"), {
-      method: "open",
+    const pdfFile = generatePDF(() => document.getElementById("container"), {
+      method: "build",
       filename: "function-example.pdf",
       page: { margin: Margin.MEDIUM },
     });
+    console.log(pdfFile);
+    console.log(typeof(pdfFile));
   };
+
+  const options = {
+    // default is `save`
+    method: 'open',
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    // resolution: Resolution.HIGH,
+    page: {
+        // margin is in MM, default is Margin.NONE = 0
+        margin: Margin.SMALL,
+        // default is 'A4'
+        // format: 'letter',
+        // default is 'portrait'
+        // orientation: 'landscape',
+    },
+    canvas: {
+        // default is 'image/jpeg' for better size performance
+        mimeType: 'image/png',
+        qualityRatio: 1
+    },
+    // Customize any value passed to the jsPDF instance and html2canvas
+    // function. You probably will not need this and things can break, 
+    // so use with caution.
+    overrides: {
+        // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+        pdf: {
+          compress: true
+        },
+        // see https://html2canvas.hertzen.com/configuration for more options
+        canvas: {
+          useCORS: true
+        }
+    },
+  };
+
+  const { toPDF, targetRef } = usePDF(options);
+
+  // you can use a function to return the target element besides using React refs
+  const getTargetElement = () => document.getElementById('content-id');
 
   // const printDocument = () => {
   //   const input = document.getElementById('divToPrint');
@@ -54,8 +140,12 @@ const Checkout = () => {
   // }
 
   return (
-    <div id="divToPrint" className="container">
+    <div>
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
+      <button onClick={() => toPDF()}>To PDF</button>
+      <button onClick={() => generatePDF(getTargetElement, options)}>Generate PDF</button>
+    {/* <PDFButton targetRef={componentRef}>Save to PDF!</PDFButton> */}
+    <div id="content-id" ref={targetRef} className="container">
       <header className="header">
         <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
         <section className="header-info">
@@ -153,6 +243,7 @@ const Checkout = () => {
         </p>
         {/* <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button> */}
       </footer>
+    </div>
     </div>
   );
 };
