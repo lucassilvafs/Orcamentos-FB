@@ -257,7 +257,7 @@ const Checkout = () => {
 
   const getUrl = () => {
     console.log("cheguei");
-    getDownloadURL(ref(storage, `orçamentos/testee`))
+    getDownloadURL(ref(storage, `orçamentos/${order.clientName}`))
       .then((url) => {
         const shareData = {
           title: `${order.clientName}.pdf`,
@@ -323,8 +323,8 @@ const Checkout = () => {
       console.log(toString(PDF_Width), toString(PDF_Height));
       
       for (var i = 1; i <= totalPDFPages; i++) { 
-        pdf.addPage(toString(PDF_Width), toString(PDF_Height));
-        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+        pdf.addPage(toString(PDF_Width), toString(PDF_Height = PDF_Height + 20));
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*3),canvas_image_width,canvas_image_height);
       }
       
       // pdf.save("HTML-Document.pdf");
@@ -334,7 +334,7 @@ const Checkout = () => {
 
       // const storageRef = Firebase.storage().ref();
       // const pdfRef = storageRef.child(`${clientName}.pdf`);
-      const storageRef = ref(storage, `orçamentos/testee`);
+      const storageRef = ref(storage, `orçamentos/${order.clientName}`);
 
       uploadBytes(storageRef, pdfBlob).then((snapshot) => {
         console.log('Uploaded a blob or file!');
@@ -402,15 +402,23 @@ const Checkout = () => {
 const shareTarget = React.useRef(null);
 
 async function onShare(shareTarget) {
-  if (!shareTarget.current) {
+  const element = document.getElementById('content-id');
+  if (!element) {
+    console.log('nao deu :/');
     return;
   }
-  const imageWidth = shareTarget.current.offsetWidth + 10;
-  console.log();
+  // const imageWidth = shareTarget.current.offsetWidth + 10;
+  // console.log();
 
-  const canvas = await html2canvas(shareTarget.current);
+  const canvas = await html2canvas(element, {
+    allowTaint:true,
+    onclone: function (clonedDoc) {
+      const hiddenDiv = clonedDoc.getElementById('content-id');
+      hiddenDiv.style.display = 'block';
+    }
+  });
   console.log(canvas);
-  shareTarget.current.appendChild(canvas);
+  element.appendChild(canvas);
   const dataUrl = canvas.toDataURL();
   console.log(dataUrl);
   const blob = await (await fetch(dataUrl)).blob();
@@ -484,7 +492,7 @@ function makePDF() {
   return (
     <div>
       <button type="button" className="btn-pdf" onClick={makePDF}>makePDF</button>
-      <button type="button" className="btn-pdf" onClick={onSharee}>PDF</button>
+      <button type="button" className="btn-pdf" onClick={onShare}>on share</button>
       <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
       <button className="btn-pdf" onClick={() => onShare(shareTarget)}>Share Image</button>
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
