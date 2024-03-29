@@ -305,7 +305,7 @@ const Checkout = () => {
       // var imgData = canvas.toDataURL("image/jpeg", 1.0);
       const imgData = canvas.toDataURL("image/jpeg", 1.0);
       console.log(imgData);
-      // element.appendChild(canvas);
+      element.appendChild(canvas);
       // var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
       // pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
       
@@ -340,21 +340,37 @@ const Checkout = () => {
     }
     const canvas = await html2canvas(element);
     const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
+    const data = {
+      files: [
+        new File([dataUrl], 'image.png', {
+          type: dataUrl.type,
+        }),
+      ],
+      title: 'My title',
+      text: 'My text',
+    };
     // const blob = await (await fetch(dataUrl)).blob();
     // const filesArray = [new File([blob], 'htmldiv', { type: blob.type, lastModified: new Date().getTime() })];
     // console.log(dataUrl);
     // console.log(blob);
     // console.log(filesArray);
-
-    if (navigator.share) {
-      await navigator.share({
-        title: 'Compartilhar imagem',
-        files: [dataUrl],
-      });
+    console.log(data);
+    if (navigator.canShare(data)) {
+      await navigator.share(data);
       console.log('Imagem compartilhada com sucesso!');
     } else {
       throw new Error('Web Share API não é suportada neste navegador.');
     }
+
+    // if (navigator.share) {
+    //   await navigator.share({
+    //     title: 'Compartilhar imagem',
+    //     files: [dataUrl],
+    //   });
+    //   console.log('Imagem compartilhada com sucesso!');
+    // } else {
+    //   throw new Error('Web Share API não é suportada neste navegador.');
+    // }
     
     // const shareData = {
     //   files: filesArray,
