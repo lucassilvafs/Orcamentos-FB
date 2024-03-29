@@ -342,7 +342,7 @@ const Checkout = () => {
     }
   };
 
-  async function onShareeS() {
+  async function onSharee() {
     const element = document.getElementById('content-id');
     if (!element) {
       return;
@@ -409,7 +409,7 @@ async function onShare(shareTarget) {
 
   return (
     <div id="content-id" ref={targetRef} className="container">
-      <button type="button" className="btn-pdf" onClick={onShare}>PDF</button>
+      <button type="button" className="btn-pdf" onClick={onSharee}>PDF</button>
       <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
       <button className="pure-button pure-button-primary share-button" onClick={onShare.bind(onShare, shareTarget)}>Share Image</button>
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
