@@ -333,6 +333,15 @@ const Checkout = () => {
     });
   };
 
+  const shareButton = async () => {
+    try {
+      await navigator.share({ title: "Example Page", url: "" });
+      console.log("Data was shared successfully");
+    } catch (err) {
+      console.error("Share failed:", err.message);
+    }
+  };
+
   async function onShare() {
     const element = document.getElementById('content-id');
     if (!element) {
@@ -384,6 +393,7 @@ const Checkout = () => {
     <div id="content-id" ref={targetRef} className="container">
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
       <button type="button" className="btn-pdf" onClick={onShare}>PDF</button>
+      <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
       <button type="button" className="btn-pdf" onClick={getPDF}>get PDF</button>
       <button onClick={() => toPDF()}>To PDF</button>
       <button onClick={() => generatePDF(getTargetElement, options)}>Generate PDF</button>
