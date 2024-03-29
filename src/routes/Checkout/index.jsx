@@ -393,12 +393,17 @@ const shareTarget = React.useRef(null);
 
 async function onShare(shareTarget) {
   if (!shareTarget.current) {
+    console.log("nao tem");
     return;
   }
   const canvas = await html2canvas(shareTarget.current);
+  console.log(canvas);
   const dataUrl = canvas.toDataURL();
+  console.log(dataUrl);
   const blob = await (await fetch(dataUrl)).blob();
+  console.log(blob);
   const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
+  console.log(filesArray);
   const shareData = {
     files: filesArray,
   };
@@ -408,10 +413,10 @@ async function onShare(shareTarget) {
 }
 
   return (
-    <div id="content-id" ref={targetRef} className="container">
+    <div id="content-id" ref={shareTarget} className="container">
       <button type="button" className="btn-pdf" onClick={onSharee}>PDF</button>
       <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
-      <button className="pure-button pure-button-primary share-button" onClick={onShare.bind(onShare, shareTarget)}>Share Image</button>
+      <button className="btn-pdf" onClick={() => onShare(shareTarget)}>Share Image</button>
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
       <button type="button" className="btn-pdf" onClick={getPDF}>get PDF</button>
       <button onClick={() => toPDF()}>To PDF</button>
