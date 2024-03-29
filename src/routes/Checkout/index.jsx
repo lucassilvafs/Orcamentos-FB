@@ -342,7 +342,7 @@ const Checkout = () => {
     }
   };
 
-  async function onShare() {
+  async function onShareeS() {
     const element = document.getElementById('content-id');
     if (!element) {
       return;
@@ -389,11 +389,30 @@ const Checkout = () => {
     // });
 }
 
+const shareTarget = React.useRef(null);
+
+async function onShare(shareTarget) {
+  if (!shareTarget.current) {
+    return;
+  }
+  const canvas = await html2canvas(shareTarget.current);
+  const dataUrl = canvas.toDataURL();
+  const blob = await (await fetch(dataUrl)).blob();
+  const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
+  const shareData = {
+    files: filesArray,
+  };
+  navigator.share(shareData).then(() => {
+    console.log('Shared successfully');
+  });
+}
+
   return (
     <div id="content-id" ref={targetRef} className="container">
-      <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
       <button type="button" className="btn-pdf" onClick={onShare}>PDF</button>
       <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
+      <button className="pure-button pure-button-primary share-button" onClick={onShare.bind(onShare, shareTarget)}>Share Image</button>
+      <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
       <button type="button" className="btn-pdf" onClick={getPDF}>get PDF</button>
       <button onClick={() => toPDF()}>To PDF</button>
       <button onClick={() => generatePDF(getTargetElement, options)}>Generate PDF</button>
