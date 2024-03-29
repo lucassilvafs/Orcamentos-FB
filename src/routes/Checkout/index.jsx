@@ -257,7 +257,7 @@ const Checkout = () => {
 
   const getUrl = () => {
     console.log("cheguei");
-    getDownloadURL(ref(storage, `orçamentos/testeee.jpeg`))
+    getDownloadURL(ref(storage, `orçamentos/testee`))
       .then((url) => {
         const shareData = {
           title: `${order.clientName}.pdf`,
@@ -334,7 +334,7 @@ const Checkout = () => {
 
       // const storageRef = Firebase.storage().ref();
       // const pdfRef = storageRef.child(`${clientName}.pdf`);
-      const storageRef = ref(storage, `orçamentos/testeee.jpeg`);
+      const storageRef = ref(storage, `orçamentos/testee`);
 
       uploadBytes(storageRef, pdfBlob).then((snapshot) => {
         console.log('Uploaded a blob or file!');
