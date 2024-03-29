@@ -80,7 +80,7 @@ const Checkout = () => {
     generatePDF(() => document.getElementById("container"), {
       method: "open",
       filename: "function-example.pdf",
-      page: { margin: Margin.MEDIUM },
+      page: { margin: Margin.SMALL },
     }).then((blob) => {
       console.log(blob);
       console.log(typeof(blob));
