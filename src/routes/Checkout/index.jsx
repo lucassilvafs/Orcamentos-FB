@@ -257,7 +257,7 @@ const Checkout = () => {
 
   const getUrl = () => {
     console.log("cheguei");
-    getDownloadURL(ref(storage, `orçamentos/${order.clientName}.pdf`))
+    getDownloadURL(ref(storage, `orçamentos/testeee.jpeg`))
       .then((url) => {
         const shareData = {
           title: `${order.clientName}.pdf`,
@@ -304,39 +304,39 @@ const Checkout = () => {
       
       // var imgData = canvas.toDataURL("image/jpeg", 1.0);
       const imgData = canvas.toDataURL("image/jpeg", 1.0);
-      console.log(imgData);
-      element.appendChild(canvas);
-      const blob = await (await fetch(imgData)).blob();
-      console.log(blob);
-      const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
-      console.log(filesArray);
-      const shareData = {
-        files: filesArray,
-      };
-      navigator.share(shareData).then(() => {
-        console.log('Shared successfully');
-      });
-      // var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
-      // pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+      // console.log(imgData);
+      // element.appendChild(canvas);
+      // const blob = await (await fetch(imgData)).blob();
+      // console.log(blob);
+      // const filesArray = [new File([blob], 'htmldiv.jpeg', { type: blob.type, lastModified: new Date().getTime() })];
+      // console.log(filesArray);
+      // const shareData = {
+      //   files: filesArray,
+      // };
+      // navigator.share(shareData).then(() => {
+      //   console.log('Shared successfully');
+      // });
+      var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
       
-      // console.log(PDF_Width, PDF_Height);
-      // console.log(toString(PDF_Width), toString(PDF_Height));
+      console.log(PDF_Width, PDF_Height);
+      console.log(toString(PDF_Width), toString(PDF_Height));
       
-      // for (var i = 1; i <= totalPDFPages; i++) { 
-      //   // pdf.addPage(PDF_Width, PDF_Height);
-      //   pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-      // }
+      for (var i = 1; i <= totalPDFPages; i++) { 
+        pdf.addPage(toString(PDF_Width), toString(PDF_Height));
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+      }
       
       // pdf.save("HTML-Document.pdf");
 
-      // const pdfBlob = pdf.output('blob');
+      const pdfBlob = pdf.output('blob');
       // const pdfBlob = imgData;
 
       // const storageRef = Firebase.storage().ref();
       // const pdfRef = storageRef.child(`${clientName}.pdf`);
-      const storageRef = ref(storage, `orçamentos/teste.jpeg`);
+      const storageRef = ref(storage, `orçamentos/testeee.jpeg`);
 
-      uploadBytes(storageRef, filesArray).then((snapshot) => {
+      uploadBytes(storageRef, pdfBlob).then((snapshot) => {
         console.log('Uploaded a blob or file!');
         getUrl();
       });
@@ -403,9 +403,11 @@ const shareTarget = React.useRef(null);
 
 async function onShare(shareTarget) {
   if (!shareTarget.current) {
-    console.log("nao tem");
     return;
   }
+  const imageWidth = shareTarget.current.offsetWidth + 10;
+  console.log();
+
   const canvas = await html2canvas(shareTarget.current);
   console.log(canvas);
   shareTarget.current.appendChild(canvas);
@@ -413,9 +415,10 @@ async function onShare(shareTarget) {
   console.log(dataUrl);
   const blob = await (await fetch(dataUrl)).blob();
   console.log(blob);
-  const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
+  const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
   console.log(filesArray);
   const shareData = {
+    title: `Orçamento - ${order.clientName}`,
     files: filesArray,
   };
   navigator.share(shareData).then(() => {
@@ -423,8 +426,64 @@ async function onShare(shareTarget) {
   });
 }
 
+function makePDF() {
+  var quotes = document.getElementById('content-id');
+
+  html2canvas(quotes).then((canvas) => {
+    //! MAKE YOUR PDF
+    var pdf = new jsPDF('p', 'pt', 'letter');
+
+    for (var i = 0; i <= quotes.clientHeight / 980; i++) {
+      //! This is all just html2canvas stuff
+      var srcImg = canvas;
+      var sX = 0;
+      var sY = 980 * i; // start 980 pixels down for every new page
+      var sWidth = 900;
+      var sHeight = 980;
+      var dX = 0;
+      var dY = 0;
+      var dWidth = 900;
+      var dHeight = 980;
+
+      var onePageCanvas = document.createElement("canvas");
+      onePageCanvas.setAttribute('width', 900);
+      onePageCanvas.setAttribute('height', 980);
+      var ctx = onePageCanvas.getContext('2d');
+      // details on this usage of this function:
+      // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
+      ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+
+      var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+
+      var width = onePageCanvas.width;
+      var height = onePageCanvas.clientHeight;
+
+      //! If we're on anything other than the first page,
+      // add another page
+      if (i > 0) {
+        pdf.addPage('612', '791'); //8.5" x 11" in pts (in*72)
+      }
+      //! now we declare that we're working on that page
+      pdf.setPage(i + 1);
+      //! now we add content to that page!
+      pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .62), (height * .62));
+    }
+
+    //! after the for loop is finished running, we save the pdf.
+    var pdfBlob = pdf.output('blob'); // Converte o PDF para um blob
+
+    const storageRef = ref(storage, `teste.png`);
+
+      uploadBytes(storageRef, pdfBlob).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        // getUrl();
+      }); // Envia o blob do PDF para o Firebase Storage
+  });
+}
+
   return (
     <div>
+      <button type="button" className="btn-pdf" onClick={makePDF}>makePDF</button>
       <button type="button" className="btn-pdf" onClick={onSharee}>PDF</button>
       <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
       <button className="btn-pdf" onClick={() => onShare(shareTarget)}>Share Image</button>
