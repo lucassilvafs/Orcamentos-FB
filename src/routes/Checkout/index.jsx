@@ -295,7 +295,7 @@ const Checkout = () => {
     var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
     
 
-    html2canvas(element,{allowTaint:true}).then(function (canvas) {
+    html2canvas(element,{allowTaint:true}).then(async function (canvas) {
       canvas.getContext('2d');
       
       console.log(canvas.height, canvas.width);
@@ -306,6 +306,16 @@ const Checkout = () => {
       const imgData = canvas.toDataURL("image/jpeg", 1.0);
       console.log(imgData);
       element.appendChild(canvas);
+      const blob = await (await fetch(imgData)).blob();
+      console.log(blob);
+      const filesArray = [new File([blob], 'htmldiv.png', { type: blob.type, lastModified: new Date().getTime() })];
+      console.log(filesArray);
+      const shareData = {
+        files: filesArray,
+      };
+      navigator.share(shareData).then(() => {
+        console.log('Shared successfully');
+      });
       // var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
       // pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
       
@@ -326,7 +336,7 @@ const Checkout = () => {
       // const pdfRef = storageRef.child(`${clientName}.pdf`);
       const storageRef = ref(storage, `orçamentos/${order.clientName}`);
 
-      uploadBytes(storageRef, imgData).then((snapshot) => {
+      uploadBytes(storageRef, blob).then((snapshot) => {
         console.log('Uploaded a blob or file!');
         getUrl();
       });
@@ -396,8 +406,9 @@ async function onShare(shareTarget) {
     console.log("nao tem");
     return;
   }
-  const canvas = await html2canvas(shareTarget.current);
+  const canvas = await html2canvas(shareTarget.current, {width: 700});
   console.log(canvas);
+  shareTarget.current.appendChild(canvas);
   const dataUrl = canvas.toDataURL();
   console.log(dataUrl);
   const blob = await (await fetch(dataUrl)).blob();
