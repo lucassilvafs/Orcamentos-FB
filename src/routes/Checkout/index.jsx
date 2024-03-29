@@ -36,7 +36,8 @@ const Checkout = () => {
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }, // Configurações do jsPDF
       };
 
-      const pdfBlob = await toPdf(options); // Passando as opções para gerar o PDF
+      // const pdfBlob = await toPdf(options); // Passando as opções para gerar o PDF
+      const pdfBlob = generatePDF(getTargetElement, options);
       console.log(pdfBlob);
       const storageRef = ref(storage, 'orçamentos/teste.pdf');
 
@@ -77,13 +78,10 @@ const Checkout = () => {
 
   const downloadPDF = () => {
     // you can also pass React refs, e.g. `generatePDF(ref, options)`
-    generatePDF(() => document.getElementById("container"), {
+    generatePDF(getTargetElement, {
       method: "open",
       filename: "function-example.pdf",
       page: { margin: Margin.SMALL },
-    }).then((blob) => {
-      console.log(blob);
-      console.log(typeof(blob));
     });
   };
 
@@ -251,18 +249,17 @@ const Checkout = () => {
   //     })
   //   ;
   // }
+  {/* <a href={instance.url} download="test.pdf">
+  Download
+  </a> */}
+  {/* <p>{instance.blob}</p> */}
+{/* <PDFButton targetRef={componentRef}>Save to PDF!</PDFButton> */}
 
   return (
-    <div>
+    <div id="content-id" ref={targetRef} className="container">
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
       <button onClick={() => toPDF()}>To PDF</button>
       <button onClick={() => generatePDF(getTargetElement, options)}>Generate PDF</button>
-      {/* <a href={instance.url} download="test.pdf">
-      Download
-      </a> */}
-      {/* <p>{instance.blob}</p> */}
-    {/* <PDFButton targetRef={componentRef}>Save to PDF!</PDFButton> */}
-    <div id="content-id" ref={targetRef} className="container">
       <header className="header">
         <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
         <section className="header-info">
@@ -360,7 +357,6 @@ const Checkout = () => {
         </p>
         {/* <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button> */}
       </footer>
-    </div>
     </div>
   );
 };
