@@ -24,6 +24,9 @@ const Checkout = () => {
   const componentRef = useRef();
   const storage = getStorage();
 
+  // you can use a function to return the target element besides using React refs
+  const getTargetElement = () => document.getElementById('content-id');
+
   const handleGeneratePDF = async (toPdf) => {
     try {
       const options = {
@@ -234,9 +237,6 @@ const Checkout = () => {
   // const [instance, updateInstance] = usePDF({ document: MyDoc });
   // const blob = pdf(MyDoc).toBlob();
 
-  // you can use a function to return the target element besides using React refs
-  const getTargetElement = () => document.getElementById('content-id');
-
   // const printDocument = () => {
   //   const input = document.getElementById('divToPrint');
   //   html2canvas(input)
@@ -255,9 +255,120 @@ const Checkout = () => {
   {/* <p>{instance.blob}</p> */}
 {/* <PDFButton targetRef={componentRef}>Save to PDF!</PDFButton> */}
 
+  const getUrl = () => {
+    console.log("cheguei");
+    getDownloadURL(ref(storage, `orçamentos/${order.clientName}.pdf`))
+      .then((url) => {
+        const shareData = {
+          title: `${order.clientName}.pdf`,
+          url: url,
+        };
+
+        if (navigator.share && navigator.canShare(shareData)) {
+          navigator.share(shareData)
+          .then(() => console.log('Successful share'))
+          .catch((error) => console.log('Error sharing', error));
+          return;
+        }
+
+        console.log("Web Share API is not supported in your browser.");
+        console.log(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const getPDF = () => {
+    const element = document.getElementById('content-id');
+    var HTML_Width = element.offsetWidth;
+    var HTML_Height = element.offsetHeight;
+
+    // var HTML_Width = shareTarget.current.offsetWidth;
+    // var HTML_Height = shareTarget.current.offsetHeight;
+    var top_left_margin = 15;
+    var PDF_Width = HTML_Width+(top_left_margin*2);
+    var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+    var canvas_image_width = HTML_Width;
+    var canvas_image_height = HTML_Height;
+    
+    var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+    
+
+    html2canvas(element,{allowTaint:true}).then(function (canvas) {
+      canvas.getContext('2d');
+      
+      console.log(canvas.height, canvas.width);
+      console.log(toString(canvas.height), toString(canvas.width));
+      
+      
+      // var imgData = canvas.toDataURL("image/jpeg", 1.0);
+      const imgData = canvas.toDataURL("image/jpeg", 1.0);
+      console.log(imgData);
+      // element.appendChild(canvas);
+      // var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+      // pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+      
+      // console.log(PDF_Width, PDF_Height);
+      // console.log(toString(PDF_Width), toString(PDF_Height));
+      
+      // for (var i = 1; i <= totalPDFPages; i++) { 
+      //   // pdf.addPage(PDF_Width, PDF_Height);
+      //   pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+      // }
+      
+      // pdf.save("HTML-Document.pdf");
+
+      // const pdfBlob = pdf.output('blob');
+      // const pdfBlob = imgData;
+
+      // const storageRef = Firebase.storage().ref();
+      // const pdfRef = storageRef.child(`${clientName}.pdf`);
+      const storageRef = ref(storage, `orçamentos/${order.clientName}`);
+
+      uploadBytes(storageRef, imgData).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        getUrl();
+      });
+    });
+  };
+
+  async function onShare() {
+    const element = document.getElementById('content-id');
+    if (!element) {
+      return;
+    }
+    const canvas = await html2canvas(element);
+    const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
+    // const blob = await (await fetch(dataUrl)).blob();
+    // const filesArray = [new File([blob], 'htmldiv', { type: blob.type, lastModified: new Date().getTime() })];
+    // console.log(dataUrl);
+    // console.log(blob);
+    // console.log(filesArray);
+
+    if (navigator.share) {
+      await navigator.share({
+        title: 'Compartilhar imagem',
+        files: [dataUrl],
+      });
+      console.log('Imagem compartilhada com sucesso!');
+    } else {
+      throw new Error('Web Share API não é suportada neste navegador.');
+    }
+    
+    // const shareData = {
+    //   files: filesArray,
+    // };
+    // navigator.share(shareData).then(() => {
+    //   console.log('Shared successfully');
+    // });
+}
+
   return (
     <div id="content-id" ref={targetRef} className="container">
       <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
+      <button type="button" className="btn-pdf" onClick={onShare}>PDF</button>
+      <button type="button" className="btn-pdf" onClick={getPDF}>get PDF</button>
       <button onClick={() => toPDF()}>To PDF</button>
       <button onClick={() => generatePDF(getTargetElement, options)}>Generate PDF</button>
       <header className="header">

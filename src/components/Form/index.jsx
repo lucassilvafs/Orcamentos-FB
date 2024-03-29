@@ -258,24 +258,34 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
 	};
 
   async function onShare() {
-      const element = document.getElementById('child-component');
+      const element = document.getElementById('content-id');
       if (!element) {
         return;
       }
       const canvas = await html2canvas(element);
       const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-      const blob = await (await fetch(dataUrl)).blob();
-      const filesArray = [new File([blob], 'htmldiv', { type: blob.type, lastModified: new Date().getTime() })];
-      console.log(dataUrl);
-      console.log(blob);
-      console.log(filesArray);
+      // const blob = await (await fetch(dataUrl)).blob();
+      // const filesArray = [new File([blob], 'htmldiv', { type: blob.type, lastModified: new Date().getTime() })];
+      // console.log(dataUrl);
+      // console.log(blob);
+      // console.log(filesArray);
+
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Compartilhar imagem',
+          files: [dataUrl],
+        });
+        console.log('Imagem compartilhada com sucesso!');
+      } else {
+        throw new Error('Web Share API não é suportada neste navegador.');
+      }
       
-      const shareData = {
-        files: filesArray,
-      };
-      navigator.share(shareData).then(() => {
-        console.log('Shared successfully');
-      });
+      // const shareData = {
+      //   files: filesArray,
+      // };
+      // navigator.share(shareData).then(() => {
+      //   console.log('Shared successfully');
+      // });
   }
 
   const downloadPDF = async () => {
