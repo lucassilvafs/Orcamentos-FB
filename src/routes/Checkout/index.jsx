@@ -298,7 +298,7 @@ const Checkout = () => {
     html2canvas(element,{allowTaint:true}).then(async function (canvas) {
       canvas.getContext('2d');
       
-      console.log(canvas.height, canvas.width);
+      console.log(canvas);
       console.log(toString(canvas.height), toString(canvas.width));
       
       
@@ -334,9 +334,9 @@ const Checkout = () => {
 
       // const storageRef = Firebase.storage().ref();
       // const pdfRef = storageRef.child(`${clientName}.pdf`);
-      const storageRef = ref(storage, `orçamentos/${order.clientName}`);
+      const storageRef = ref(storage, `orçamentos/teste.jpeg`);
 
-      uploadBytes(storageRef, blob).then((snapshot) => {
+      uploadBytes(storageRef, filesArray).then((snapshot) => {
         console.log('Uploaded a blob or file!');
         getUrl();
       });
@@ -406,7 +406,7 @@ async function onShare(shareTarget) {
     console.log("nao tem");
     return;
   }
-  const canvas = await html2canvas(shareTarget.current, {width: 700});
+  const canvas = await html2canvas(shareTarget.current);
   console.log(canvas);
   shareTarget.current.appendChild(canvas);
   const dataUrl = canvas.toDataURL();
