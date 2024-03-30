@@ -22,7 +22,6 @@ p {
     justify-content: center;
     flex-direction: column;
     padding: 20px;
-    background-color: #0beb4e;
     width: 800px;
 }
         
@@ -33,7 +32,6 @@ p {
     align-items: center;
     margin: 0;
     /* margin-left: 30px; */
-    background-color: #F29215;
     /* display: none; */
 
 
