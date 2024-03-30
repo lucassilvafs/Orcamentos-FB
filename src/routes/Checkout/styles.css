@@ -15,20 +15,31 @@
 p {
     margin: 5px;
 }
+
+.container-ex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #0beb4e;
+    width: 800px;
+}
         
 .container {
     font-family: Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* margin: 0 40px; */
-    margin-left: 30px;
+    margin: 0;
+    /* margin-left: 30px; */
+    background-color: #F29215;
     /* display: none; */
 
 
     @media (max-width: 750px) {
         width: 700px;
-        padding: 30px;
+        /* padding: 30px; */
     }
 }
 
@@ -79,7 +90,7 @@ table.table-items td{
 }
 
 table.table-items th.desc-table{
-    width: 200px;
+    width: 90%;
 }
 
 table.table-items th.td-table {
