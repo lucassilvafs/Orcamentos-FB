@@ -401,17 +401,22 @@ const Checkout = () => {
 
 const shareTarget = React.useRef(null);
 
-async function onShare(shareTarget) {
+async function onShare() {
   const element = document.getElementById('content-id');
   if (!element) {
     console.log('nao deu :/');
     return;
   }
-  // const imageWidth = shareTarget.current.offsetWidth + 10;
-  // console.log();
+  const imageWidth = element.offsetWidth + 100;
+  console.log(element.offsetWidth);
+  // console.log(imageWidth);
 
   const canvas = await html2canvas(element, {
     allowTaint:true,
+    // width: element.offsetWidth + 30,
+    // height: element.offsetHeight + 30,
+    windowHeight: element.offsetHeight + 50,
+    windowWidth: element.offsetWidth + 50,
     onclone: function (clonedDoc) {
       const hiddenDiv = clonedDoc.getElementById('content-id');
       hiddenDiv.style.display = 'block';
@@ -420,11 +425,11 @@ async function onShare(shareTarget) {
   console.log(canvas);
   element.appendChild(canvas);
   const dataUrl = canvas.toDataURL();
-  console.log(dataUrl);
+  // console.log(dataUrl);
   const blob = await (await fetch(dataUrl)).blob();
-  console.log(blob);
+  // console.log(blob);
   const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
-  console.log(filesArray);
+  // console.log(filesArray);
   const shareData = {
     title: `Orçamento - ${order.clientName}`,
     files: filesArray,
