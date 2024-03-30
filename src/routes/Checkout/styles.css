@@ -24,6 +24,7 @@ p {
     /* margin: 0 40px; */
     margin-left: 30px;
     /* display: none; */
+    padding: 25px;
 
     @media (max-width: 750px) {
         width: 700px;

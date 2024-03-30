@@ -413,8 +413,8 @@ async function onShare() {
 
   const canvas = await html2canvas(element, {
     allowTaint:true,
-    width: element.offsetWidth + 100,
-    height: element.offsetHeight + 100,
+    // width: element.offsetWidth + 100,
+    // height: element.offsetHeight + 100,
     // windowHeight: element.offsetHeight + 50,
     // windowWidth: element.offsetWidth + 50,
     onclone: function (clonedDoc) {
