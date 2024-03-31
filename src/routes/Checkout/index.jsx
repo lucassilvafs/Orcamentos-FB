@@ -484,14 +484,7 @@ function makePDF() {
 
   return (
     <div>
-      <button type="button" className="btn-pdf" onClick={makePDF}>makePDF</button>
-      <button type="button" className="btn-pdf" onClick={onShare}>on share</button>
-      <button type="button" className="btn-pdf" onClick={shareButton}>PDFffff</button>
-      <button className="btn-pdf" onClick={() => onShare(shareTarget)}>Share Image</button>
-      <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button>
-      <button type="button" className="btn-pdf" onClick={getPDF}>get PDF</button>
-      <button onClick={() => toPDF()}>To PDF</button>
-      <button onClick={() => generatePDF(getTargetElement, options)}>Generate PDF</button>
+      <button className="btn-pdf" onClick={onShare}>Share Image</button>
       <div id="content-id" className="container-ex">
         <div ref={shareTarget} className="container">
           <header className="header">
@@ -505,7 +498,7 @@ function makePDF() {
               <p>Rua Elizabete pio Quintanilha, 123 - Vicente Pinzon</p>
             </section>
           </header>
-          ________________________________________________________________________________________________
+          _________________________________________________________________________________________________
           <main>
             <section className="order-info">
               <h4>Segue nossa proposta conforme solicitado:</h4>
