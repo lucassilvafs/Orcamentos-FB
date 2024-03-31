@@ -114,6 +114,8 @@ h1.header-title {
 
 .header {
     display: flex;
+    border: 1px solid white;
+    background-color: white;
     flex-direction: row;
     color: #000000
 }
