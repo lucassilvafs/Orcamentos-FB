@@ -184,153 +184,179 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     setQuant(""); 
   };
 
-  const getUrl = () => {
-    console.log("cheguei");
-    getDownloadURL(ref(storage, `orçamentos/${clientName}.pdf`))
-      .then((url) => {
-        const shareData = {
-          title: `${clientName}.pdf`,
-          url: url,
-        };
+  // const getUrl = () => {
+  //   console.log("cheguei");
+  //   getDownloadURL(ref(storage, `orçamentos/${clientName}.pdf`))
+  //     .then((url) => {
+  //       const shareData = {
+  //         title: `${clientName}.pdf`,
+  //         url: url,
+  //       };
 
-        if (navigator.share && navigator.canShare(shareData)) {
-          navigator.share(shareData)
-          .then(() => console.log('Successful share'))
-          .catch((error) => console.log('Error sharing', error));
-          return;
-        }
+  //       if (navigator.share && navigator.canShare(shareData)) {
+  //         navigator.share(shareData)
+  //         .then(() => console.log('Successful share'))
+  //         .catch((error) => console.log('Error sharing', error));
+  //         return;
+  //       }
 
-        console.log("Web Share API is not supported in your browser.");
-        console.log(url);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  //       console.log("Web Share API is not supported in your browser.");
+  //       console.log(url);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
 
-  const getPDF = () => {
-    const element = document.getElementById('child-component');
-    var HTML_Width = element.offsetWidth;
-		var HTML_Height = element.offsetHeight;
+  // const getPDF = () => {
+  //   const element = document.getElementById('child-component');
+  //   var HTML_Width = element.offsetWidth;
+	// 	var HTML_Height = element.offsetHeight;
 
-		// var HTML_Width = shareTarget.current.offsetWidth;
-		// var HTML_Height = shareTarget.current.offsetHeight;
-		var top_left_margin = 15;
-		var PDF_Width = HTML_Width+(top_left_margin*2);
-		var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
-		var canvas_image_width = HTML_Width;
-		var canvas_image_height = HTML_Height;
+	// 	// var HTML_Width = shareTarget.current.offsetWidth;
+	// 	// var HTML_Height = shareTarget.current.offsetHeight;
+	// 	var top_left_margin = 15;
+	// 	var PDF_Width = HTML_Width+(top_left_margin*2);
+	// 	var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+	// 	var canvas_image_width = HTML_Width;
+	// 	var canvas_image_height = HTML_Height;
 		
-		var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
+	// 	var totalPDFPages = Math.ceil(HTML_Height/PDF_Height)-1;
 		
 
-		html2canvas(element,{allowTaint:true}).then(async function async(canvas) {
-			canvas.getContext('2d');
+	// 	html2canvas(element,{allowTaint:true}).then(async function async(canvas) {
+	// 		canvas.getContext('2d');
 			
-			console.log(canvas.height+"  "+canvas.width);
-			
-			
-			// var imgData = canvas.toDataURL("image/jpeg", 1.0);
-      var imgData = canvas.toDataURL("image/jpeg", 1.0);
-			// var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
-		  // pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
+	// 		console.log(canvas.height+"  "+canvas.width);
 			
 			
-			// for (var i = 1; i <= totalPDFPages; i++) { 
-			// 	pdf.addPage(PDF_Width, PDF_Height);
-			// 	pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
-			// }
+	// 		// var imgData = canvas.toDataURL("image/jpeg", 1.0);
+  //     var imgData = canvas.toDataURL("image/jpeg", 1.0);
+	// 		// var pdf = new jsPDF('p', 'pt',  [PDF_Width, PDF_Height]);
+	// 	  // pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin,canvas_image_width,canvas_image_height);
 			
-		  // pdf.save("HTML-Document.pdf");
+			
+	// 		// for (var i = 1; i <= totalPDFPages; i++) { 
+	// 		// 	pdf.addPage(PDF_Width, PDF_Height);
+	// 		// 	pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+	// 		// }
+			
+	// 	  // pdf.save("HTML-Document.pdf");
 
-      // const pdfBlob = pdf.output('blob');
-      const pdfBlob = imgData;
+  //     // const pdfBlob = pdf.output('blob');
+  //     const pdfBlob = imgData;
 
-      // const storageRef = Firebase.storage().ref();
-      // const pdfRef = storageRef.child(`${clientName}.pdf`);
-      const storageRef = ref(storage, `orçamentos/${clientName}.jpg`);
+  //     // const storageRef = Firebase.storage().ref();
+  //     // const pdfRef = storageRef.child(`${clientName}.pdf`);
+  //     const storageRef = ref(storage, `orçamentos/${clientName}.jpg`);
 
-      uploadBytes(storageRef, imgData).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-        getUrl();
-      });
-    });
-	};
+  //     uploadBytes(storageRef, imgData).then((snapshot) => {
+  //       console.log('Uploaded a blob or file!');
+  //       getUrl();
+  //     });
+  //   });
+	// };
+
+  // async function onShare() {
+  //     const element = document.getElementById('content-id');
+  //     if (!element) {
+  //       return;
+  //     }
+  //     const canvas = await html2canvas(element);
+  //     const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
+  //     // const blob = await (await fetch(dataUrl)).blob();
+  //     // const filesArray = [new File([blob], 'htmldiv', { type: blob.type, lastModified: new Date().getTime() })];
+  //     // console.log(dataUrl);
+  //     // console.log(blob);
+  //     // console.log(filesArray);
+
+  //     if (navigator.share) {
+  //       await navigator.share({
+  //         title: 'Compartilhar imagem',
+  //         files: [dataUrl],
+  //       });
+  //       console.log('Imagem compartilhada com sucesso!');
+  //     } else {
+  //       throw new Error('Web Share API não é suportada neste navegador.');
+  //     }
+      
+  //     // const shareData = {
+  //     //   files: filesArray,
+  //     // };
+  //     // navigator.share(shareData).then(() => {
+  //     //   console.log('Shared successfully');
+  //     // });
+  // }
+
+  // const downloadPDF = async () => {
+  //   try {
+  //     // you can also pass React refs, e.g. `generatePDF(ref, options)`
+  //     const pdf = await generatePDF(() => document.getElementById("container"), {
+  //       method: "build",
+  //       filename: "function-example.pdf",
+  //       page: { margin: Margin.MEDIUM },
+  //     });
+  //     console.log(pdf);
+  //     const pdfFile = new File([pdf], 'generated_pdf.pdf', { type: 'application/pdf' });
+  //     console.log(pdfFile);
+  //     // const pdfBlob = pdfFile.output('blob');
+
+  //     const storageRef = ref(storage, `orçamentos/generated_pdf.pdf`);
+
+  //     uploadBytes(storageRef, pdfFile).then((snapshot) => {
+  //       console.log('Uploaded a blob or file!');
+  //       // getUrl();
+  //     });
+
+  //     // if (navigator.share) {
+  //     //   await navigator.share({
+  //     //     files: [pdfFile],
+  //     //   });
+  //     // } else {
+  //     //   alert('Web Share API is not supported in this browser.');
+  //     // }
+  //   } catch (error) {
+  //     console.error('Error sharing PDF:', error);
+  //   }
+  // };
+
+  // const printDocument = () => {
+  //   const input = document.getElementById('divToPrint');
+  //   html2canvas(input)
+  //     .then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF();
+  //       pdf.addImage(imgData, 'JPEG', 0, 0);
+  //       // pdf.output('dataurlnewwindow');
+  //       pdf.save("download.pdf");
+  //     })
+  //   ;
+  // }
 
   async function onShare() {
-      const element = document.getElementById('content-id');
-      if (!element) {
-        return;
-      }
-      const canvas = await html2canvas(element);
-      const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-      // const blob = await (await fetch(dataUrl)).blob();
-      // const filesArray = [new File([blob], 'htmldiv', { type: blob.type, lastModified: new Date().getTime() })];
-      // console.log(dataUrl);
-      // console.log(blob);
-      // console.log(filesArray);
-
-      if (navigator.share) {
-        await navigator.share({
-          title: 'Compartilhar imagem',
-          files: [dataUrl],
-        });
-        console.log('Imagem compartilhada com sucesso!');
-      } else {
-        throw new Error('Web Share API não é suportada neste navegador.');
-      }
-      
-      // const shareData = {
-      //   files: filesArray,
-      // };
-      // navigator.share(shareData).then(() => {
-      //   console.log('Shared successfully');
-      // });
-  }
-
-  const downloadPDF = async () => {
-    try {
-      // you can also pass React refs, e.g. `generatePDF(ref, options)`
-      const pdf = await generatePDF(() => document.getElementById("container"), {
-        method: "build",
-        filename: "function-example.pdf",
-        page: { margin: Margin.MEDIUM },
-      });
-      console.log(pdf);
-      const pdfFile = new File([pdf], 'generated_pdf.pdf', { type: 'application/pdf' });
-      console.log(pdfFile);
-      // const pdfBlob = pdfFile.output('blob');
-
-      const storageRef = ref(storage, `orçamentos/generated_pdf.pdf`);
-
-      uploadBytes(storageRef, pdfFile).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-        // getUrl();
-      });
-
-      // if (navigator.share) {
-      //   await navigator.share({
-      //     files: [pdfFile],
-      //   });
-      // } else {
-      //   alert('Web Share API is not supported in this browser.');
-      // }
-    } catch (error) {
-      console.error('Error sharing PDF:', error);
+    const element = document.getElementById('content-id');
+    if (!element) {
+      return;
     }
-  };
-
-  const printDocument = () => {
-    const input = document.getElementById('divToPrint');
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'JPEG', 0, 0);
-        // pdf.output('dataurlnewwindow');
-        pdf.save("download.pdf");
-      })
-    ;
+  
+    const canvas = await html2canvas(element, {
+      onclone: function (clonedDoc) {
+        const hiddenDiv = clonedDoc.getElementById('content-id');
+        hiddenDiv.style.display = 'block';
+      }
+    });
+    canvas.getContext('2d');
+    element.appendChild(canvas);
+    const dataUrl = canvas.toDataURL();
+    const blob = await (await fetch(dataUrl)).blob();
+    const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
+    const shareData = {
+      title: `Orçamento - ${order.clientName}`,
+      files: filesArray,
+    };
+    navigator.share(shareData).then(() => {
+      console.log('Shared successfully');
+    });
   }
 
   const handleOpenModalDelete = () => {
@@ -435,30 +461,9 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         <Grid itens={productsList} setItens={setProductsList} />
       </C.GridContainer>
 
-      {/* <ReactToPdf targetRef={componentRef} filename="generated_pdf">
-      {({ toPdf }) => 
-            <button onClick={toPdf} className="get_started">
-              Download
-            </button>
-          }
-      </ReactToPdf> */}
-      {/* <PdfFile props={rerender} ref={componentRef} /> */}
-      <button onClick={handleSharePDF}>Share PDF</button>
+      <button className="btn-pdf" onClick={onShare}>Share Image</button>
 
-      <C.Button onClick={downloadPDF}>Download PDF</C.Button>
-      <div id="container">
-        <PdfFile props={rerender} ref={componentRef} />
-      </div>
-
-      {/* <button onClick={() => toPDF()}>Download PDF</button> */}
-      {/* <div style={{ display:"none" }}><PdfFile props={rerender} ref={componentRef} /></div> */}
-
-      {/* <button onClick={() => generatePDF(targetRef, {filename: 'page.pdf'})}>Download PDF </button> */}
-      {/* <div ref={targetRef}>
-        Content to be included in the PDF
-      </div> */}
-      
-      {/* <div ref={targetRef}><PdfFile props={rerender} ref={componentRef} /></div> */}
+      <div id="content-id" style={{ display:"none" }}><PdfFile props={rerender} ref={componentRef} /></div>
       
       <C.ResumeDiv ref={shareTarget}>
         <Modal
