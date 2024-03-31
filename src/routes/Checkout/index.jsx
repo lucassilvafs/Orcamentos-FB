@@ -414,6 +414,7 @@ async function onShare() {
     }
   });
   canvas.getContext('2d');
+  element.appendChild(canvas);
   const dataUrl = canvas.toDataURL();
   const blob = await (await fetch(dataUrl)).blob();
   const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
@@ -504,7 +505,7 @@ function makePDF() {
               <p>Rua Elizabete pio Quintanilha, 123 - Vicente Pinzon</p>
             </section>
           </header>
-          _______________________________________________________________________________________
+          ________________________________________________________________________________________________
           <main>
             <section className="order-info">
               <h4>Segue nossa proposta conforme solicitado:</h4>
