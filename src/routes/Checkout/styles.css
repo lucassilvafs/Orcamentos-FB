@@ -67,6 +67,10 @@ h1.header-title, section.header-info p {
     margin: 1px
 }
 
+h4 {
+    margin-left: 10px;
+}
+
 table.table-items {
     padding: 0px;
     margin-top: 10px;
