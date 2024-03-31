@@ -404,38 +404,19 @@ const shareTarget = React.useRef(null);
 async function onShare() {
   const element = document.getElementById('content-id');
   if (!element) {
-    console.log('nao deu :/');
     return;
   }
-  const imageWidth = element.offsetWidth + 100;
-  console.log(element.offsetWidth);
-  // console.log(imageWidth);
 
   const canvas = await html2canvas(element, {
-    // allowTaint:true,
-    // margin: {
-    //   top: 50,
-    //   right: 0,
-    //   bottom: 0,
-    //   left: 0,
-    // },
-    // width: element.offsetWidth - 100,
-    // height: element.offsetHeight - 100,
-    // windowHeight: element.offsetHeight + 50,
-    // windowWidth: element.offsetWidth + 50,
     onclone: function (clonedDoc) {
       const hiddenDiv = clonedDoc.getElementById('content-id');
       hiddenDiv.style.display = 'block';
     }
   });
-  console.log(canvas);
-  element.appendChild(canvas);
-  const dataUrl = canvas.toDataURL("image/png", 1.0);
-  // console.log(dataUrl);
+  canvas.getContext('2d');
+  const dataUrl = canvas.toDataURL();
   const blob = await (await fetch(dataUrl)).blob();
-  // console.log(blob);
   const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
-  // console.log(filesArray);
   const shareData = {
     title: `Orçamento - ${order.clientName}`,
     files: filesArray,
