@@ -412,7 +412,7 @@ async function onShare() {
   // console.log(imageWidth);
 
   const canvas = await html2canvas(element, {
-    allowTaint:true,
+    // allowTaint:true,
     // margin: {
     //   top: 50,
     //   right: 0,
@@ -430,7 +430,7 @@ async function onShare() {
   });
   console.log(canvas);
   element.appendChild(canvas);
-  const dataUrl = canvas.toDataURL();
+  const dataUrl = canvas.toDataURL("image/png", 1.0);
   // console.log(dataUrl);
   const blob = await (await fetch(dataUrl)).blob();
   // console.log(blob);
