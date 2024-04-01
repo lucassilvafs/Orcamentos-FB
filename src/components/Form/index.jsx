@@ -333,7 +333,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
   //   ;
   // }
 
-  const handleShare = async() => {
+  const onShare = async() => {
     const element = document.getElementById('content-id');
     if (!element) {
       return;
@@ -349,6 +349,9 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     const dataUrl = canvas.toDataURL();
     const blob = await (await fetch(dataUrl)).blob();
     const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
+    
+    setRerender(!rerender);
+    
     const shareData = {
       title: `Orçamento - ${order.clientName}`,
       files: filesArray,
@@ -356,6 +359,25 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     navigator.share(shareData).then(() => {
       console.log('Shared successfully');
     });
+  }
+
+  const handleShare = () => {
+    const arrayProducts = JSON.parse(localStorage.getItem('products'));
+    const generateID = () => Math.round(Math.random() * 1000);
+
+    const order = {
+      id: generateID(),
+      clientName,
+      production,
+      payment,
+      products: arrayProducts,
+      total:total
+    };
+    localStorage.setItem("order", JSON.stringify(order));
+
+    setRerender(!rerender);
+
+    setTimeout(() => onShare(), 1000);
   }
 
   const handleOpenModalDelete = () => {
@@ -465,7 +487,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
       </div>
 
       <div id="content-id" style={{ display:"none" }} className="container-ex">
-        <PdfFileMobile props={rerender} />
+        <PdfFileMobile rerender={rerender} />
       </div>
       
       <C.ResumeDiv ref={shareTarget}>
@@ -490,7 +512,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         </C.ResumeContainer>
       </C.ResumeDiv>
 
-      <div id="content-id" style={{ display:"none" }} className="container-ex">
+      {/* <div id="content-id" style={{ display:"none" }} className="container-ex">
         <div ref={shareTarget} className="container">
           <header className="header">
             <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
@@ -589,7 +611,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
             </p>
           </footer>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

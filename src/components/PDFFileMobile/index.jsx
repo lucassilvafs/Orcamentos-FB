@@ -10,7 +10,7 @@ import ReactToPdf from 'react-to-pdf';
 import { PDFViewer, PDFDownloadLink, usePDF, Document, Page, pdf } from '@react-pdf/renderer';
 import PDFButton from '../../components/PDFButton';
 
-const Checkout = () => {
+const PDFFileMobile = ({ rerender }) => {
   const [order, setOrder] = useState({});
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +73,7 @@ const Checkout = () => {
     }
 
     setIsLoading(true);
-  }, [setIsLoading]);
+  }, [setIsLoading, rerender]);
 
   const handleCheckout = () => {
     window.print();
@@ -587,4 +587,4 @@ function makePDF() {
   );
 };
 
-export default Checkout;
+export default PDFFileMobile;
