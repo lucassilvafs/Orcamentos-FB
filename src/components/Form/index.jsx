@@ -481,7 +481,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
           <p>Tem certeza que deseja apagar tudo?</p>
         </Modal>
         <C.ResumeContainer>
-          <C.HeaderTitle>Total</C.HeaderTitle>
+          <C.HeaderTitleResume>Total</C.HeaderTitleResume>
           <C.Footer>
             <C.Total>R$ {total}</C.Total>
           </C.Footer>
