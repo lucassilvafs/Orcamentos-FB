@@ -484,7 +484,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         <PdfFile props={rerender} ref={componentRef} />
       </div>
 
-      <div id="content-id" style={{ display:"block" }} className="container-ex">
+      <div id="content-id" style={{ display:"none" }} className="container-ex">
         <PdfFileMobile rerender={rerender} />
       </div>
       
