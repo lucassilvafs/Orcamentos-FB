@@ -483,7 +483,7 @@ function makePDF() {
 }
 
   return (
-      <div id="content-id" className="container-ex">
+      // <div id="content-id" className="container-ex">
         <div ref={shareTarget} className="container">
           <header className="header">
             <img src={logo} className="logo" alt="logo da Fortaleza Brindes" />
@@ -583,7 +583,7 @@ function makePDF() {
             {/* <button type="button" className="btn-pdf" onClick={downloadPDF}>Baixar PDF</button> */}
           </footer>
         </div>
-      </div>
+      // </div>
   );
 };
 

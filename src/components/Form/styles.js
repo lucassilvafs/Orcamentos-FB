@@ -373,3 +373,14 @@ export const ButtonErase = styled.button`
     font-size: 16px;
   }
 `; 
+
+export const ContainerEx = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  width: 800px;
+  border: 1px solid white;
+  background-color: white;
+`; 
