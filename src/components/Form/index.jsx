@@ -465,9 +465,9 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         <PdfFile props={rerender} ref={componentRef} />
       </div>
 
-      <div id="content-id" style={{ display:"none" }}>
-        <PdfFileMobile props={rerender} />
-      </div>
+      {/* <div id="content-id" style={{ display:"none" }}> */}
+        <PdfFileMobile id="content-id" style={{ display:"none" }} props={rerender} />
+      {/* </div> */}
       
       <C.ResumeDiv ref={shareTarget}>
         <Modal
