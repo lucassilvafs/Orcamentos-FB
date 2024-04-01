@@ -38,7 +38,6 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
   const [inputText, setInputText] = useState('');
   const [rerender, setRerender] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [test, setTest] = useState('nao apertou');
 
   const storage = getStorage();
 
@@ -486,7 +485,6 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
           <C.Footer>
             <C.Total>R$ {total}</C.Total>
           </C.Footer>
-          <C.HeaderTitle>{ test }</C.HeaderTitle>
           <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
           <C.ButtonShare onClick={handleShare}>Compartilhar Arquivo</C.ButtonShare>
           <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
