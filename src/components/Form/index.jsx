@@ -346,7 +346,6 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
       }
     });
     canvas.getContext('2d');
-    element.appendChild(canvas);
     const dataUrl = canvas.toDataURL();
     const blob = await (await fetch(dataUrl)).blob();
     const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
