@@ -350,10 +350,8 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     const blob = await (await fetch(dataUrl)).blob();
     const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
     
-    setRerender(!rerender);
-    
     const shareData = {
-      title: `Orçamento - ${order.clientName}`,
+      title: `Orçamento - ${clientName}`,
       files: filesArray,
     };
     navigator.share(shareData).then(() => {
