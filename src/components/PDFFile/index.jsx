@@ -3,7 +3,7 @@ import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
 
-const PdfFile = React.forwardRef(({ props, getPdf, handleCheckout }, ref) => {
+const PdfFile = React.forwardRef(({ props }, ref) => {
   const [order, setOrder] = useState({});
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +51,7 @@ const PdfFile = React.forwardRef(({ props, getPdf, handleCheckout }, ref) => {
               </tr>
             </thead>
             <tbody>
-              { isLoading && products.map((product, index) => (
+              { isLoading && products?.map((product, index) => (
                   <tr key={index}>
                     <td>{product.quant}</td>
                     <td>{product.desc}</td>
