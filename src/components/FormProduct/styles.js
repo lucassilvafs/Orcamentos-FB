@@ -112,9 +112,20 @@ export const Input = styled.input`
   outline: none;
   border-radius: 5px;
   padding: 5px 10px;
-  font-size: 15px;
+  font-size: 14px;
   border: 1px solid #ccc;
   margin-bottom: 10px;
+  width: 200px;
+`;
+
+export const InputNumber = styled.input`
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  width: 160px;
 `;
 
 export const InputDesc = styled.textarea`
@@ -123,8 +134,9 @@ export const InputDesc = styled.textarea`
   border-radius: 5px;
   padding: 5px 10px;
   height: 50px;
-  font-size: 15px;
+  font-size: 14px;
   border: 1px solid #ccc;
+  width: 200px;
 `;
 
 export const TopInput = styled.input`
@@ -242,4 +254,15 @@ export const InputModal = styled.input`
   font-size: 15px;
   border: 1px solid #ccc;
   margin-bottom: 10px;
+`;
+
+export const InputDescModal = styled.textarea`
+  outline: none;
+  font-family: Poppins;
+  resize: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 70px;
+  font-size: 15px;
+  border: 1px solid #ccc;
 `;

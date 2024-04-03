@@ -112,6 +112,7 @@ export const InputContent = styled.div`
 export const Input = styled.input`
   outline: none;
   border-radius: 5px;
+  font-family: Poppins;
   padding: 5px 10px;
   font-size: 15px;
   border: 1px solid #ccc;
@@ -124,10 +125,11 @@ export const Input = styled.input`
 
 export const InputDesc = styled.textarea`
   outline: none;
+  font-family: Poppins;
   resize: none;
   border-radius: 5px;
   padding: 5px 10px;
-  height: 50px;
+  height: 70px;
   font-size: 15px;
   border: 1px solid #ccc;
 `;
@@ -192,7 +194,7 @@ export const ButtonScroll = styled.button`
 `;
 
 export const Label = styled.label`
-  
+  font-family: Poppins;
 `;
 
 export const Select = styled.select`
@@ -211,9 +213,10 @@ export const HeaderTitle = styled.p`
   font-size: 20px;
   font-weight: bold;
   align-text: center;
+  align-self: center;
 
   @media (max-width: 750px) {
-    margin-left: 100px;
+    margin-left: 155px;
   }
 `;
 
@@ -227,7 +230,7 @@ export const InputSearch = styled.input`
   
   @media (max-width: 750px) {
     width: 230px;
-    margin-left: 65px;
+    margin-left: 75px;
   }
 `;
 
@@ -384,3 +387,46 @@ export const ContainerEx = styled.div`
   border: 1px solid white;
   background-color: white;
 `; 
+
+export const ContainerModal = styled.div`
+  max-width: 1120px;
+  margin: 20px auto;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 15px 0px;
+  gap: 10px;
+
+  @media (max-width: 750px) {
+    display: grid;
+  }
+`;
+
+export const InputContentModal = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LabelModal = styled.label`
+`;
+
+export const InputModal = styled.input`
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+`;
+
+export const InputDescModal = styled.textarea`
+  outline: none;
+  font-family: Poppins;
+  resize: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 70px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+`;

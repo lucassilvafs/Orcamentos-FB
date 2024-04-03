@@ -9,6 +9,7 @@ import { useReactToPrint } from 'react-to-print';
 import PdfFile from "../PDFFile";
 import PdfFileMobile from "../PDFFileMobile";
 import { Modal } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import html2canvas from 'html2canvas';
 import "../PDFFile/styles.css";
 
@@ -30,9 +31,27 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
   const [inputText, setInputText] = useState('');
   const [rerender, setRerender] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const componentRef = useRef();
   const containerRef = useRef();
+  const { confirm } = Modal;
+
+  const showDeleteConfirm = () => {
+    confirm({
+      title: 'Tem certeza que deseja apagar tudo?',
+      icon: <ExclamationCircleFilled />,
+      okText: 'Sim',
+      okType: 'danger',
+      cancelText: 'Não',
+      onOk() {
+        localStorage.removeItem('products');
+        localStorage.removeItem('order');
+        reloadPage();
+      },
+      onCancel() {},
+    });
+  };
 
   useEffect(() => {
     if(orderInfo) {
@@ -52,9 +71,47 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     content: () => componentRef.current,
   });
 
-  const handleCheckout = () => {
+  const onShare = async() => {
+    const element = document.getElementById('content-id');
+    if (!element) {
+      return;
+    }
+  
+    const canvas = await html2canvas(element, {
+      onclone: function (clonedDoc) {
+        const hiddenDiv = clonedDoc.getElementById('content-id');
+        hiddenDiv.style.display = 'block';
+      }
+    });
+    canvas.getContext('2d');
+    const dataUrl = canvas.toDataURL();
+    const blob = await (await fetch(dataUrl)).blob();
+    const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
+    
+    const shareData = {
+      title: `Orçamento - ${clientName}`,
+      files: filesArray,
+    };
+    navigator.share(shareData).then(() => {
+      console.log('Compartilhado com sucesso!');
+    });
+  }
+
+  const handleShare = (value) => {
     const arrayProducts = JSON.parse(localStorage.getItem('products'));
     const generateID = () => Math.round(Math.random() * 1000);
+
+    if (arrayProducts.length === 0) {
+      alert("Por favor, adicione um ou mais produtos para gerar o orçamento!");
+      // Modal.confirm({
+      //   title: 'Atenção!',
+      //   content: 'Por favor, adicione um ou mais produtos para gerar o orçamento!',
+      //   footer: (_, { OkBtn }) => (
+      //     <OkBtn />
+      //     ),
+      //   });
+      return;
+    }
 
     const order = {
       id: generateID(),
@@ -68,7 +125,12 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
 
     setRerender(!rerender);
 
-    setTimeout(() => handlePrint(), 1000);
+    if (value === "Gerar") {
+      setTimeout(() => handlePrint(), 1000);
+      return;
+    }
+
+    setTimeout(() => onShare(), 1000);
   }
 
   const handleChange = (target) => {
@@ -79,10 +141,19 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
 
   const handleAddInfo = (name) => {
     const product = dataProducts.find((product) => product.name === name);
+
+    const isRepeated = productsList.find((productItem) => productItem.productName === product.name);
+    if (isRepeated) {
+      alert("Esse produto já foi adicionado!");
+      return;
+    }
+
     setProductName(product.name);
     setQuant(product.quant_min);
     setDesc(product.desc);
     setUnitValue(Number(product.price).toFixed(2));
+
+    setModalOpen(true);
   };
 
   const handleScroll = (scrollAmount) => {
@@ -125,67 +196,28 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
     setDesc("");
     setUnitValue("");
     setQuant(""); 
+
+    setModalOpen(false);
   };
 
-  const onShare = async() => {
-    const element = document.getElementById('content-id');
-    if (!element) {
-      return;
-    }
-  
-    const canvas = await html2canvas(element, {
-      onclone: function (clonedDoc) {
-        const hiddenDiv = clonedDoc.getElementById('content-id');
-        hiddenDiv.style.display = 'block';
-      }
-    });
-    canvas.getContext('2d');
-    const dataUrl = canvas.toDataURL();
-    const blob = await (await fetch(dataUrl)).blob();
-    const filesArray = [new File([blob], 'orçamento.png', { type: blob.type, lastModified: new Date().getTime() })];
-    
-    const shareData = {
-      title: `Orçamento - ${clientName}`,
-      files: filesArray,
-    };
-    navigator.share(shareData).then(() => {
-      console.log('Shared successfully');
-    });
-  }
-
-  const handleShare = () => {
-    const arrayProducts = JSON.parse(localStorage.getItem('products'));
-    const generateID = () => Math.round(Math.random() * 1000);
-
-    const order = {
-      id: generateID(),
-      clientName,
-      production,
-      payment,
-      products: arrayProducts,
-      total:total
-    };
-    localStorage.setItem("order", JSON.stringify(order));
-
-    setRerender(!rerender);
-
-    setTimeout(() => onShare(), 1000);
-  }
-
-  const handleOpenModalDelete = () => {
-    setOpenModalDelete(true);
+  const handleCancel = () => {
+    setModalOpen(false);
   };
 
-  const handleCloseModalDelete = () => {
-    setOpenModalDelete(false);
-  };
+  // const handleOpenModalDelete = () => {
+  //   setOpenModalDelete(true);
+  // };
 
-  const handleConfirmDelete = () => {
-    localStorage.removeItem('products');
-    localStorage.removeItem('order');
-    reloadPage();
-    setOpenModalDelete(false);
-  };
+  // const handleCloseModalDelete = () => {
+  //   setOpenModalDelete(false);
+  // };
+
+  // const handleConfirmDelete = () => {
+  //   localStorage.removeItem('products');
+  //   localStorage.removeItem('order');
+  //   reloadPage();
+  //   setOpenModalDelete(false);
+  // };
 
   const reloadPage = () => window.location.reload();
 
@@ -215,7 +247,7 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
         </C.InputContent>
       </C.TopContainer>
 
-      <C.Container>
+      {/* <C.Container>
         <C.InputContent>
           <C.Label>Nome do produto</C.Label>
           <C.Input value={productName} onChange={(e) => setProductName(e.target.value)} />
@@ -244,7 +276,49 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
           />
         </C.InputContent>
         <C.Button onClick={handleSave}>ADICIONAR</C.Button>
-      </C.Container>
+      </C.Container> */}
+
+      <Modal
+        // title="Insira os novos valores"
+        open={modalOpen}
+        okButtonProps={{ style: { backgroundColor: "#F29215", borderWidth: 0} }}
+        onOk={handleSave}
+        okText="Adicionar"
+        onCancel={handleCancel}
+        cancelText="Cancelar"
+        // confirmLoading={confirmLoading}
+      >
+        <C.ContainerModal>
+          <C.InputContent>
+            <C.Label>Nome do produto</C.Label>
+            <C.Input value={productName} onChange={(e) => setProductName(e.target.value)} />
+          </C.InputContent>
+
+          <C.InputContent>
+            <C.Label>Descrição</C.Label>
+            <C.InputDesc value={desc} onChange={(e) => setDesc(e.target.value)} />
+          </C.InputContent>
+
+          <C.InputContent>
+            <C.Label>Valor Unitário</C.Label>
+            <C.Input
+              value={unitValue}
+              type="number"
+              onChange={(e) => setUnitValue(e.target.value)}
+            />
+          </C.InputContent>
+
+          <C.InputContent>
+            <C.Label>Quantidade</C.Label>
+            <C.Input
+              value={quant}
+              type="number"
+              onChange={(e) => setQuant(e.target.value)}
+            />
+          </C.InputContent>
+          {/* <C.Button onClick={handleSave}>ADICIONAR</C.Button> */}
+        </C.ContainerModal>
+      </Modal>
       
       <C.ItemsContainer>
         <C.HeaderTitle>Produtos</C.HeaderTitle>
@@ -283,24 +357,14 @@ const Form = ({ handleAdd, productsList, setProductsList, total, orderInfo }) =>
       </div>
       
       <C.ResumeDiv>
-        <Modal
-          title="Atenção"
-          open={openModalDelete}
-          onOk={handleConfirmDelete}
-          onCancel={handleCloseModalDelete}
-          okText="Sim"
-          cancelText="Cancelar"
-        >
-          <p>Tem certeza que deseja apagar tudo?</p>
-        </Modal>
         <C.ResumeContainer>
           <C.HeaderTitleResume>Total</C.HeaderTitleResume>
           <C.Footer>
             <C.Total>R$ {total}</C.Total>
           </C.Footer>
-          <C.ButtonDownload onClick={handleCheckout}>Gerar Orçamento</C.ButtonDownload>
-          <C.ButtonShare onClick={handleShare}>Compartilhar Arquivo</C.ButtonShare>
-          <C.ButtonErase onClick={handleOpenModalDelete}>Apagar Tudo</C.ButtonErase>
+          <C.ButtonDownload value="Gerar" onClick={(e) => handleShare(e.target.value)}>Gerar Orçamento</C.ButtonDownload>
+          <C.ButtonShare value="Compartilhar" onClick={(e) => handleShare(e.target.value)}>Compartilhar Arquivo</C.ButtonShare>
+          <C.ButtonErase onClick={showDeleteConfirm}>Apagar Tudo</C.ButtonErase>
         </C.ResumeContainer>
       </C.ResumeDiv>
     </>

@@ -51,7 +51,7 @@ const PdfFile = React.forwardRef(({ props }, ref) => {
               </tr>
             </thead>
             <tbody>
-              { isLoading && products?.map((product, index) => (
+              { products?.map((product, index) => (
                   <tr key={index}>
                     <td>{product.quant}</td>
                     <td>{product.desc}</td>

@@ -125,7 +125,7 @@ const FormProduct = () => {
   return (
     <>
       <C.TopContainer>
-      <C.InputContent>
+        <C.InputContent>
           <C.Label>Nome do produto</C.Label>
           <C.Input value={productName} onChange={(e) => setProductName(e.target.value)} />
         </C.InputContent>
@@ -137,7 +137,7 @@ const FormProduct = () => {
 
         <C.InputContent>
           <C.Label>Valor unitário</C.Label>
-          <C.Input
+          <C.InputNumber
             value={unitValue}
             type="number"
             onChange={(e) => setUnitValue(e.target.value)}
@@ -146,7 +146,7 @@ const FormProduct = () => {
 
         <C.InputContent>
           <C.Label>Quantidade mínima</C.Label>
-          <C.Input
+          <C.InputNumber
             value={quant}
             type="number"
             onChange={(e) => setQuant(e.target.value)}
@@ -163,6 +163,7 @@ const FormProduct = () => {
       <Modal
         title="Insira os novos valores"
         open={modalOpen}
+        okButtonProps={{ style: { backgroundColor: "#F29215", borderWidth: 0} }}
         onOk={handleOk}
         okText={modalTextOK}
         onCancel={handleCancel}
@@ -177,7 +178,7 @@ const FormProduct = () => {
 
           <C.InputContentModal>
             <C.LabelModal>Descrição</C.LabelModal>
-            <C.InputDesc value={modalDesc} onChange={(e) => setmodalDesc(e.target.value)} />
+            <C.InputDescModal value={modalDesc} onChange={(e) => setmodalDesc(e.target.value)} />
           </C.InputContentModal>
 
           <C.InputContentModal>

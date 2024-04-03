@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./styles.css";
 import logo from "../../images/logo.png";
 import qrCode from "../../images/qr-code.png";
+import { Modal } from 'antd';
 
 const PDFFileMobile = ({ rerender }) => {
   const [order, setOrder] = useState({});
@@ -52,7 +53,7 @@ const PDFFileMobile = ({ rerender }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  { isLoading && products?.map((product, index) => (
+                  { products?.map((product, index) => (
                       <tr key={index}>
                         <td>{product.quant}</td>
                         <td>{product.desc}</td>
